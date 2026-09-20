@@ -3,123 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Türkiye Yapay Zeka Araçları Portalı | eimza-kep</title>
+    <title>Türkiye Yapay Zeka Araçları - Mali Müşavir, Avukat & KOBİ</title>
     <style>
         :root {
-            --primary: #1e40af;
-            --primary-hover: #1e3a8a;
-            --sidebar-bg: #0f172a;
-            --sidebar-hover: #1e293b;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --bg-page: #f1f5f9;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #eef2ff;
+            --secondary: #0f172a;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
             --border: #e2e8f0;
-            --success: #16a34a;
-            --warning: #d97706;
-            --danger: #dc2626;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --warning: #f59e0b;
+            --warning-light: #fffbeb;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --sidebar-width: 320px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background: var(--bg-page); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { display: flex; height: 100vh; background: var(--bg); color: var(--text-main); overflow: hidden; }
 
         /* Sidebar */
         .sidebar {
-            width: 320px; background: var(--sidebar-bg); color: white; display: flex; flex-direction: column;
-            flex-shrink: 0; border-right: 1px solid #334155;
+            width: var(--sidebar-width);
+            background: var(--secondary);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #1e293b;
+            flex-shrink: 0;
         }
         .sidebar-header {
-            padding: 20px; border-bottom: 1px solid #334155; display: flex; align-items: center; gap: 10px;
+            padding: 20px;
+            border-bottom: 1px solid #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .sidebar-header h1 { font-size: 1.1rem; font-weight: 700; color: #f8fafc; }
-        .sidebar-header span { font-size: 0.75rem; background: var(--primary); padding: 2px 8px; border-radius: 12px; }
-
-        .sidebar-search { padding: 12px 16px; border-bottom: 1px solid #334155; }
+        .sidebar-header h1 { font-size: 1.05rem; font-weight: 700; color: #f8fafc; display: flex; align-items: center; gap: 8px; }
+        .sidebar-header span { font-size: 0.75rem; background: #334155; padding: 3px 8px; border-radius: 999px; color: #94a3b8; }
+        .sidebar-search { padding: 12px 16px; border-bottom: 1px solid #1e293b; }
         .sidebar-search input {
-            width: 100%; background: #1e293b; border: 1px solid #475569; color: white;
-            padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; outline: none;
+            width: 100%; padding: 9px 14px; background: #1e293b; border: 1px solid #334155;
+            border-radius: 8px; color: white; font-size: 0.85rem; outline: none;
         }
-        .sidebar-search input:focus { border-color: #3b82f6; }
-
-        .tools-nav { flex: 1; overflow-y: auto; padding: 10px 0; }
+        .sidebar-search input:focus { border-color: var(--primary); }
+        .tools-nav { flex: 1; overflow-y: auto; padding: 12px 0; }
         .category-title {
-            font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #94a3b8;
-            padding: 12px 20px 6px; letter-spacing: 0.5px;
+            padding: 10px 20px 4px 20px; font-size: 0.72rem; font-weight: 700;
+            color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em;
         }
         .tool-item {
-            padding: 10px 20px; font-size: 0.85rem; color: #cbd5e1; cursor: pointer;
-            display: flex; align-items: center; gap: 8px; transition: all 0.15s;
+            padding: 10px 20px; font-size: 0.84rem; color: #cbd5e1; cursor: pointer;
+            display: flex; align-items: center; gap: 10px; transition: all 0.15s;
         }
-        .tool-item:hover { background: var(--sidebar-hover); color: white; }
+        .tool-item:hover { background: #1e293b; color: white; }
         .tool-item.active { background: var(--primary); color: white; font-weight: 600; }
+        .tool-item-icon { font-size: 1.1rem; }
 
         /* Main Workspace */
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* Top Bar */
+        /* Topbar */
         .topbar {
             height: 64px; background: var(--card-bg); border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center; padding: 0 24px;
+            display: flex; justify-content: space-between; align-items: center; padding: 0 24px; flex-shrink: 0;
         }
-        .topbar-title { font-size: 1.15rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 8px; }
-        .api-key-badge {
-            display: flex; align-items: center; gap: 8px; background: #f8fafc; border: 1px solid var(--border);
-            padding: 6px 14px; border-radius: 8px; font-size: 0.85rem; cursor: pointer;
+        .topbar-title { font-size: 1.15rem; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 10px; }
+        .topbar-actions { display: flex; align-items: center; gap: 12px; }
+
+        .api-badge {
+            display: inline-flex; align-items: center; gap: 8px; background: #f8fafc; border: 1px solid var(--border);
+            padding: 7px 14px; border-radius: 8px; font-size: 0.83rem; cursor: pointer; transition: all 0.2s;
         }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warning); }
+        .api-badge:hover { background: #f1f5f9; border-color: #cbd5e1; }
+        .status-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--warning); }
         .status-dot.active { background: var(--success); }
+
+        /* Notice Banner */
+        .notice-banner {
+            background: #f0fdf4; border-bottom: 1px solid #bbf7d0; padding: 10px 24px;
+            display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; color: #166534;
+        }
+        .notice-banner.demo-mode {
+            background: #eff6ff; border-bottom: 1px solid #bfdbfe; color: #1e40af;
+        }
+        .notice-banner a { color: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+        .notice-banner-btn {
+            background: white; border: 1px solid #bfdbfe; padding: 4px 10px; border-radius: 6px;
+            font-size: 0.78rem; font-weight: 600; cursor: pointer; color: #1e40af; margin-left: 8px;
+        }
+        .notice-banner-btn:hover { background: #dbeafe; }
 
         /* Workspace Grid */
         .workspace { flex: 1; overflow-y: auto; padding: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
         .card {
             background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
-            display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
         .card-header {
-            padding: 16px 20px; border-bottom: 1px solid var(--border); background: #fafafa;
+            padding: 14px 20px; border-bottom: 1px solid var(--border); background: #fafafa;
             display: flex; justify-content: space-between; align-items: center;
         }
-        .card-header h2 { font-size: 0.95rem; font-weight: 700; color: #334155; }
+        .card-header h2 { font-size: 0.92rem; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 6px; }
         .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 14px; }
 
         textarea {
-            width: 100%; flex: 1; min-height: 220px; border: 1px solid var(--border); border-radius: 8px;
-            padding: 12px; font-size: 0.9rem; line-height: 1.5; resize: none; outline: none;
-            background: #f8fafc; color: #0f172a;
+            width: 100%; flex: 1; min-height: 240px; border: 1px solid var(--border); border-radius: 8px;
+            padding: 14px; font-size: 0.88rem; line-height: 1.55; resize: none; outline: none;
+            background: #f8fafc; color: #0f172a; transition: border-color 0.2s;
         }
         textarea:focus { border-color: var(--primary); background: white; }
 
         .output-box {
-            width: 100%; flex: 1; min-height: 220px; border: 1px solid var(--border); border-radius: 8px;
-            padding: 14px; font-size: 0.9rem; line-height: 1.6; background: #f8fafc; overflow-y: auto;
+            width: 100%; flex: 1; min-height: 240px; border: 1px solid var(--border); border-radius: 8px;
+            padding: 16px; font-size: 0.88rem; line-height: 1.65; background: #f8fafc; overflow-y: auto;
             white-space: pre-wrap; word-break: break-word; color: #1e293b;
         }
 
-        .btn-group { display: flex; gap: 10px; }
+        .btn-group { display: flex; gap: 10px; align-items: center; }
         .btn {
-            padding: 10px 18px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+            padding: 9px 16px; border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer;
             border: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;
         }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-hover); }
         .btn-secondary { background: #e2e8f0; color: #334155; }
         .btn-secondary:hover { background: #cbd5e1; }
+        .btn-outline { background: white; border: 1px solid var(--border); color: #475569; }
+        .btn-outline:hover { background: #f8fafc; border-color: #cbd5e1; }
+        .btn-sm { padding: 5px 10px; font-size: 0.78rem; border-radius: 6px; }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 24px; right: 24px; background: #0f172a; color: white;
+            padding: 10px 18px; border-radius: 8px; font-size: 0.85rem; display: none;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); z-index: 200;
+        }
 
         /* API Modal */
         .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none;
-            justify-content: center; align-items: center; z-index: 100;
+            position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(2px);
+            display: none; justify-content: center; align-items: center; z-index: 100;
         }
-        .modal { background: white; width: 450px; border-radius: 12px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2); }
-        .modal h3 { font-size: 1.15rem; margin-bottom: 12px; color: #1e293b; }
-        .modal p { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.4; }
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 6px; }
-        .form-group input, .form-group select {
-            width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; outline: none;
+        .modal {
+            background: white; width: 540px; max-width: 90vw; border-radius: 14px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.25); overflow: hidden;
+            display: flex; flex-direction: column;
         }
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+        .modal-header {
+            padding: 20px 24px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .modal-header h3 { font-size: 1.15rem; color: #0f172a; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .modal-close-btn { background: none; border: none; font-size: 1.25rem; color: #94a3b8; cursor: pointer; }
+        .modal-close-btn:hover { color: #0f172a; }
+
+        .modal-body { padding: 24px; display: flex; flex-direction: column; gap: 18px; }
+
+        /* Provider Tabs */
+        .provider-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .provider-card {
+            border: 2px solid var(--border); border-radius: 10px; padding: 14px; cursor: pointer;
+            transition: all 0.2s; text-align: left; background: #f8fafc;
+        }
+        .provider-card:hover { border-color: #cbd5e1; }
+        .provider-card.active { border-color: var(--primary); background: var(--primary-light); }
+        .provider-card-title { font-weight: 700; font-size: 0.92rem; color: #1e293b; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+        .provider-card-desc { font-size: 0.74rem; color: var(--text-muted); line-height: 1.35; }
+        .free-badge { background: #dcfce7; color: #15803d; font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; margin-left: 4px; }
+
+        .input-with-actions { display: flex; gap: 8px; position: relative; }
+        .input-with-actions input {
+            flex: 1; padding: 11px 14px; border: 1px solid var(--border); border-radius: 8px;
+            font-size: 0.9rem; outline: none; background: #f8fafc; font-family: monospace;
+        }
+        .input-with-actions input:focus { border-color: var(--primary); background: white; }
+
+        .key-guide-box {
+            background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 12px;
+            font-size: 0.8rem; color: #475569; line-height: 1.45;
+        }
+        .key-guide-box a { color: var(--primary); font-weight: 600; text-decoration: none; }
+        .key-guide-box a:hover { text-decoration: underline; }
+
+        .validation-result {
+            padding: 12px; border-radius: 8px; font-size: 0.84rem; display: none;
+            line-height: 1.4;
+        }
+        .validation-result.success { background: var(--success-light); border: 1px solid #a7f3d0; color: #065f46; display: block; }
+        .validation-result.error { background: var(--danger-light); border: 1px solid #fecaca; color: #991b1b; display: block; }
+        .validation-result.loading { background: #f1f5f9; border: 1px solid #cbd5e1; color: #334155; display: block; }
+
+        .modal-footer {
+            padding: 16px 24px; border-top: 1px solid var(--border); background: #fafafa;
+            display: flex; justify-content: space-between; align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -128,43 +212,57 @@
 <div class="sidebar">
     <div class="sidebar-header">
         <h1>🇹🇷 AI Araçları</h1>
-        <span>20 Araç</span>
+        <span id="toolsCountBadge">20 Araç</span>
     </div>
     <div class="sidebar-search">
-        <input type="text" id="searchInput" placeholder="Araç veya konu ara..." oninput="filterTools()">
+        <input type="text" id="searchInput" placeholder="Araç veya mevzuat ara..." oninput="filterTools()">
     </div>
-    <div class="tools-nav" id="toolsNav">
-        <!-- JS renders categories and tools -->
-    </div>
+    <div class="tools-nav" id="toolsNav"></div>
 </div>
 
 <!-- Main Area -->
 <div class="main-content">
+    <!-- Topbar -->
     <div class="topbar">
         <div class="topbar-title">
-            <span id="activeToolIcon">📊</span>
+            <span id="activeToolIcon">🧾</span>
             <span id="activeToolTitle">FişMatik AI</span>
         </div>
-        <div class="api-key-badge" onclick="openKeyModal()">
-            <div class="status-dot" id="keyStatusDot"></div>
-            <span id="keyStatusText">API Anahtarı: Test / Demo Modu</span>
-            <span style="font-size: 0.75rem; color: #64748b;">⚙️ Ayarlar</span>
+        <div class="topbar-actions">
+            <div class="api-badge" onclick="openKeyModal()">
+                <div class="status-dot" id="keyStatusDot"></div>
+                <span id="keyStatusText">Yükleniyor...</span>
+                <span style="font-size: 0.72rem; color: #64748b; margin-left: 2px;">⚙️ Ayarla</span>
+            </div>
         </div>
     </div>
 
+    <!-- Notice Banner -->
+    <div class="notice-banner demo-mode" id="noticeBanner">
+        <span id="noticeBannerText">💡 <b>Demo / Simülasyon Modu:</b> Canlı yapay zeka analizleri için ücretsiz bir Google Gemini veya OpenAI API anahtarı ekleyebilirsiniz.</span>
+        <div>
+            <button class="notice-banner-btn" onclick="openKeyModal()">🔑 Anahtar Ekle</button>
+            <button class="notice-banner-btn" onclick="window.open('https://aistudio.google.com/app/apikey', '_blank')">🎁 Ücretsiz Gemini Al</button>
+            <button class="notice-banner-btn" style="border:none; background:transparent;" onclick="dismissBanner()">✕</button>
+        </div>
+    </div>
+
+    <!-- Workspace -->
     <div class="workspace">
         <!-- Input Card -->
         <div class="card">
             <div class="card-header">
                 <h2>📥 Girdi Verisi</h2>
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="loadSampleData()">✨ Örnek Veri Yükle</button>
+                    <button class="btn btn-outline btn-sm" onclick="loadSampleData()">✨ Hazır Örnek Yükle</button>
                 </div>
             </div>
             <div class="card-body">
-                <textarea id="userInput" placeholder="İncelenecek metni veya veriyi buraya yapıştırın..."></textarea>
+                <textarea id="userInput" placeholder="İncelenecek metni, faturayı, sözleşme maddesini veya mizan verisini buraya yapıştırın..."></textarea>
                 <div class="btn-group">
-                    <button class="btn btn-primary" id="runBtn" onclick="runActiveTool()">🚀 Yapay Zekaya Gönder</button>
+                    <button class="btn btn-primary" id="runBtn" onclick="runActiveTool()">
+                        <span>🚀 Yapay Zeka ile Analiz Et</span>
+                    </button>
                     <button class="btn btn-secondary" onclick="clearInput()">Temizle</button>
                 </div>
             </div>
@@ -173,263 +271,403 @@
         <!-- Output Card -->
         <div class="card">
             <div class="card-header">
-                <h2>📤 Yapay Zeka Çıktısı</h2>
-                <button class="btn btn-secondary" onclick="copyOutput()">📋 Kopyala</button>
+                <h2>📤 Yapay Zeka Analizi ve Raporu</h2>
+                <div class="btn-group">
+                    <button class="btn btn-outline btn-sm" onclick="copyOutput()">📋 Kopyala</button>
+                </div>
             </div>
             <div class="card-body">
-                <div class="output-box" id="outputBox">Yapay zeka analiz sonucu burada görüntülenecektir...</div>
+                <div class="output-box" id="outputBox">Yapay zeka analiz raporu burada görüntülenecektir...</div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- API Key Modal -->
+<!-- API Key Setup Modal -->
 <div class="modal-overlay" id="keyModal">
     <div class="modal">
-        <h3>🔑 API Anahtarı ve Model Ayarları</h3>
-        <p>Kendi OpenAI veya Google Gemini API anahtarınızı girerek doğrudan canlı modelleri çalıştırabilirsiniz. Anahtarınız sadece tarayıcınızda (localStorage) saklanır, hiçbir sunucuya iletilmez.</p>
-        
-        <div class="form-group">
-            <label>Sağlayıcı</label>
-            <select id="providerSelect" onchange="handleProviderChange()">
-                <option value="openai">OpenAI (GPT-4o-mini)</option>
-                <option value="gemini">Google Gemini (Gemini 1.5 Flash)</option>
-            </select>
+        <div class="modal-header">
+            <h3>🔑 API Anahtarı ve Model Ayarları</h3>
+            <button class="modal-close-btn" onclick="closeKeyModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 0.85rem; color: #475569; line-height: 1.45;">
+                API anahtarınız <b>yalnızca tarayıcınızın yerel hafızasında (localStorage)</b> saklanır. Hiçbir sunucuya kaydedilmez veya üçüncü şahıslarla paylaşılmaz (%100 BYOK Gizliliği).
+            </p>
+
+            <div class="provider-cards">
+                <div class="provider-card active" id="cardGemini" onclick="selectProvider('gemini')">
+                    <div class="provider-card-title">
+                        <span>Google Gemini</span>
+                        <span class="free-badge">ÜCRETSİZ</span>
+                    </div>
+                    <div class="provider-card-desc">Gemini 1.5 Flash. Kredi kartsız ücretsiz kota, yüksek hız ve Türkçe başarısı.</div>
+                </div>
+                <div class="provider-card" id="cardOpenai" onclick="selectProvider('openai')">
+                    <div class="provider-card-title">
+                        <span>OpenAI</span>
+                    </div>
+                    <div class="provider-card-desc">GPT-4o-mini. Güvenilir genel akıl yürütme ve yapılandırılmış JSON çıktısı.</div>
+                </div>
+            </div>
+
+            <div>
+                <label style="display:block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: #334155;">API Anahtarınız</label>
+                <div class="input-with-actions">
+                    <input type="password" id="apiKeyInput" placeholder="AIzaSy... veya sk-...">
+                    <button class="btn btn-outline" onclick="toggleKeyVisibility()" title="Göster / Gizle">👁️</button>
+                </div>
+            </div>
+
+            <div class="key-guide-box" id="keyGuideBox"></div>
+
+            <div class="validation-result" id="validationResult"></div>
         </div>
 
-        <div class="form-group">
-            <label>API Anahtarı</label>
-            <input type="password" id="apiKeyInput" placeholder="sk-... veya AIza...">
-        </div>
-
-        <div class="modal-actions">
-            <button class="btn btn-secondary" onclick="closeKeyModal()">Kapat</button>
-            <button class="btn btn-primary" onclick="saveApiKey()">Kaydet</button>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="clearApiKey()">🗑️ Demo Moduna Dön</button>
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="closeKeyModal()">Vazgeç</button>
+                <button class="btn btn-primary" id="saveValidateBtn" onclick="testAndSaveKey()">🔍 Doğrula & Kaydet</button>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script>
-const TOOLS_DATA = [
-    // Muhasebe
-    { id: "01_fismatik_ai", cat: "muhasebe", catTitle: "📊 Muhasebe & Mali Müşavirlik", title: "01. FişMatik AI (Fiş/Fatura OCR & Yevmiye)", icon: "🧾" },
-    { id: "02_edefter_debugger_ai", cat: "muhasebe", catTitle: "📊 Muhasebe & Mali Müşavirlik", title: "02. e-Defter Debugger AI (GİB Berat Hata Çözücü)", icon: "🚨" },
-    { id: "03_mevzuat_ozelge_ai", cat: "muhasebe", catTitle: "📊 Muhasebe & Mali Müşavirlik", title: "03. MevzuatGPT TR (Vergi & GİB Özelge Danışmanı)", icon: "🏛️" },
-    { id: "04_banka_ekstresi_ai", cat: "muhasebe", catTitle: "📊 Muhasebe & Mali Müşavirlik", title: "04. BankaToYevmiye (Ekstre Sınıflandırıcı)", icon: "🏦" },
-    { id: "05_mizan_cfo_raporu_ai", cat: "muhasebe", catTitle: "📊 Muhasebe & Mali Müşavirlik", title: "05. CFO-Rapor (Mizandan Yönetici Özeti)", icon: "📈" },
-    { id: "06_beyanname_on_denetim_ai", cat: "muhasebe", catTitle: "📊 Muhasebe & Mali Müşavirlik", title: "06. Pre-Audit AI (Beyanname Çapraz Denetim)", icon: "🔍" },
-    { id: "07_bordro_vergi_asistani_ai", cat: "muhasebe", catTitle: "📊 Muhasebe & Mali Müşavirlik", title: "07. Bordro-Asistan (Maaş Kesintisi & Dilim)", icon: "💼" },
+const TOOLS_DATA = [{"id": "01_fismatik_ai", "cat": "muhasebe", "catTitle": "📊 Muhasebe & Mali Müşavirlik", "title": "FişMatik AI: Fiş/Fatura OCR ve Tekdüzen Yevmiye Üretici", "icon": "🧾", "system_prompt": "Sen Türk Tekdüzen Hesap Planı (TDHP) ve 213 Sayılı Vergi Usul Kanunu (VUK) konusunda uzmanlaşmış kıdemli bir Mali Müşavir yapay zeka asistanısın.\nGörevin: Kullanıcının sağladığı fiş veya fatura metnini/verisini analiz ederek resmi muhasebe yevmiye kaydını üretmektir.\nKurallar:\n1. Satıcı ünvanı, VKN/TCKN, Fiş/Fatura No, Tarih ve KDV oranlarını (%1, %10, %20) tespit et.\n2. Harcama türüne göre doğru gider hesabını (Örn: 770.01 Yemek/Temsil, 770.02 Akaryakıt, 770.03 Kırtasiye, 770.04 Ulaşım/Taksi) seç.\n3. KDV'yi 191 İndirilecek KDV hesabına oranına göre yaz.\n4. Ödeme nakit ise 100 Kasa, kart ise 102/329 Kredi Kartı/Banka hesabını alacaklandır.\n5. Çıktıyı hem anlaşılır bir Yevmiye Maddesi Tablosu hem de muhasebe yazılımlarına aktarılabilir JSON formatında ver.", "sample_input": "Shell Petrol A.Ş. - Beşiktaş Şubesi\nTarih: 18.03.2026 Saat: 14:32\nFiş No: 0042\nVKN: 7690012345\nPlaka: 34 ABC 123\nÜrün: Motorin V-Power\nTutar: 1.666,67 TL\nKDV (%20): 333,33 TL\nTOPLAM: 2.000,00 TL\nÖdeme: Şirket Kredi Kartı (Banka)"}, {"id": "02_edefter_debugger_ai", "cat": "muhasebe", "catTitle": "📊 Muhasebe & Mali Müşavirlik", "title": "e-Defter Debugger AI: GİB Berat Hata Çözücü", "icon": "🚨", "system_prompt": "Sen Gelir İdaresi Başkanlığı (GİB) e-Defter ve Berat teknik standartları konusunda uzmanlaşmış bir e-Dönüşüm yazılım danışmanısın.\nGörevin: Kullanıcının GİB e-Defter portalından veya berat yükleme yazılımından aldığı XML şema, imza veya balans hata mesajlarını insan diline çevirip adım adım çözüm sunmaktır.\nÇıktı Formatı:\n1. 🚨 Hatanın Anlamı (Kriptik teknik kodun sade dilde özeti)\n2. 🔍 Olası Nedenler (Yevmiye maddesi numarası, balans farkı, UTF-8 karakter sorunu, vb.)\n3. 🛠️ Adım Adım Çözüm Yolu (Muhasebe programında ne yapılması gerektiği)\n4. ⏱️ Süre ve Ceza Uyarısı (Yasal yükleme süresi uyarısı).", "sample_input": "GİB Portal Hata Kodu: SCH-00142: XML Şema Doğrulama Başarısız.\nDetay: Element '<gl-cor:totalDebit>' value '458920.52' does not match with calculated line sum '458920.50'. Error at line 1482 of Yevmiye_2026_01.xml."}, {"id": "03_mevzuat_ozelge_ai", "cat": "muhasebe", "catTitle": "📊 Muhasebe & Mali Müşavirlik", "title": "MevzuatGPT TR: Vergi & GİB Özelge Danışmanı", "icon": "🏛️", "system_prompt": "Sen Türk Vergi Hukuku, Gelir Vergisi Kanunu (GVK), Kurumlar Vergisi Kanunu (KVK) ve Katma Değer Vergisi (KDVK) mevzuatında uzmanlaşmış bir vergi danışmanısın.\nGörevin: Kullanıcının vergi ve maliye ile ilgili sorularına GİB Özelgeleri ve kanun maddeleri ışığında gerekçeli, güvenilir cevaplar vermektir.\nKurallar:\n- İlgili kanun maddesini belirt (Örn: GVK Madde 40, KDV Kanunu Madde 30/d).\n- GİB'in yerleşik özelge eğilimini açıkla.\n- Mükellefe pratik tavsiye ver; ancak resmi bir vergi incelemesinde geçerli olması için yerel vergi dairesinden özelge talep etmesini öner.", "sample_input": "Limited şirketimizin ortağı, yurt dışı iş seyahatinde şirket adına yapacağı yazılım lisansı ödemesini kendi şahsi bireysel kredi kartıyla ödedi. Fatura şirketimiz adına düzenlendi. Bu faturadaki KDV şirketimizde indirim konusu yapılabilir mi ve gider yazılabilir mi?"}, {"id": "04_banka_ekstresi_ai", "cat": "muhasebe", "catTitle": "📊 Muhasebe & Mali Müşavirlik", "title": "BankaToYevmiye: Banka Ekstresi Yevmiye Sınıflandırıcısı", "icon": "🏦", "system_prompt": "Sen banka ekstrelerini Tekdüzen Hesap Planına göre yevmiye kayıtlarına dönüştüren bir muhasebe otomasyon uzmanısın.\nGörevin: Banka işlem açıklamalarını (EFT, FAST, Havale, POS, Kredi, Komisyon) analiz ederek borç/alacak hesap kodlarını tespit etmektir.\nKurallar:\n- Müşteri tahsilatlarını 120 Alıcılar,\n- Tedarikçi ödemelerini 320 Satıcılar,\n- POS komisyon/kesintilerini 780 Finansman Gideri,\n- Vergi ödemelerini 360/361 Ödenecek Vergi/SGK,\n- Mevduat faizlerini 642 Faiz Gelirleri / 193 Peşin Ödenen Vergi olarak sınıflandır.\nÇıktıyı yapılandırılmış JSON tablosu olarak üret.", "sample_input": "1. 15.03.2026 | FAST | TR54000620000001 | GELEN: FATURA BEDELI AHMET KAYA | +14.500,00 TL\n2. 15.03.2026 | BSMV/KOMISYON | POS BLOKE COZUM UCRETI GARANTI | -245,50 TL\n3. 16.03.2026 | EFT | TR88000150000009 | GIDEN: DELTA BILISIM MAL ALIMI | -38.000,00 TL\n4. 16.03.2026 | VERGI | INTERAKTIF VD KDV ODEMESI SUBAT | -12.400,00 TL"}, {"id": "05_mizan_cfo_raporu_ai", "cat": "muhasebe", "catTitle": "📊 Muhasebe & Mali Müşavirlik", "title": "CFO-Rapor: Mizandan Yönetici Finansal Raporu Yazarı", "icon": "📈", "system_prompt": "Sen üst düzey bir Yönetim Danışmanı ve Finans Direktörüsün (CFO).\nGörevin: Sana sunulan şirket mizan veya mali tablo verilerini analiz ederek, şirket patronunun veya yönetim kurulunun anlayabileceği dilde 2 sayfalık Türkçe Yönetici Özeti (Executive Summary) yazmaktır.\nFormat:\n1. 🎯 Finansal Performans Özeti (Hasılat, Brüt Kâr, Net Kâr)\n2. ⚠️ Riskli Alanlar ve Erken Uyarılar (Nakit akışı, tahsilat gecikmeleri, stok yükü)\n3. 📊 Temel Rasyolar (Cari Oran, Likidite, Borçluluk)\n4. 💡 Patron İçin Eylem Planı (Acil alınması gereken 3 mali karar).", "sample_input": "Şirket: Mega Endüstri A.Ş. - 2026 1. Çeyrek Mizan Özeti\n- 600 Yurtiçi Satışlar: 12.500.000 TL\n- 620 Satışların Maliyeti: 8.900.000 TL\n- 630 Faaliyet Giderleri: 2.100.000 TL\n- 660 Finansman Giderleri (Kredi Faizleri): 950.000 TL\n- 120 Alıcılar (Bekleyen Alacak): 6.800.000 TL (Ortalama vade 85 güne çıktı)\n- 320 Satıcılar (Ödenecek Borç): 4.200.000 TL (Vade 45 gün)\n- 102 Bankalar (Mevcut Nakit): 450.000 TL"}, {"id": "06_beyanname_on_denetim_ai", "cat": "muhasebe", "catTitle": "📊 Muhasebe & Mali Müşavirlik", "title": "Pre-Audit AI: Beyanname Çapraz Kontrol ve Ceza Dedektörü", "icon": "🔍", "system_prompt": "Sen Gelir İdaresi Başkanlığı Vergi Denetim Kurulu (VDK) risk analiz algoritmalarına hakim bir vergi denetçisisin.\nGörevin: Mükellefin beyanname taslaklarını çapraz kontrole tabi tutarak izahat talebi veya vergi cezası doğurabilecek tutarsızlıkları önceden yakalamaktır.\nAnaliz Edilecek Noktalar:\n- KDV-1 Beyannamesi teslim matrahı ile Gelir Tablosu 600 hesabı arasındaki farklar.\n- KDV Tevkifatı yapılan alımların KDV-2 beyanıyla simetrisi.\n- KKEG eklemesinin matraha doğru yansıyıp yansımadığı.\n- Muhtasar beyanname SGK prim matrahı ile ücret bordrosu tutarlılığı.", "sample_input": "- KDV-1 Beyannamesi Kümülatif Teslim ve Hizmet Matrahı: 8.450.000 TL\n- Gelir Tablosu 600 Net Satışlar Hasılatı: 7.900.000 TL (Fark: 550.000 TL)\n- Dönem İçi Sabit Kıymet (Araç) Satışı: 550.000 TL\n- Muhtasar Beyanname Toplam Brüt Ücret: 450.000 TL\n- SGK Bildirgesi SPEK Matrahı: 420.000 TL"}, {"id": "07_bordro_vergi_asistani_ai", "cat": "muhasebe", "catTitle": "📊 Muhasebe & Mali Müşavirlik", "title": "Bordro-Asistan: Personel Maaş Kesintisi ve Vergi Dilimi Danışmanı", "icon": "💼", "system_prompt": "Sen 193 Sayılı Gelir Vergisi Kanunu, 5510 Sayılı SGK Kanunu ve 7349 Sayılı Asgari Ücret Vergi İstisnası Kanunu konusunda uzman bir bordro ve İK danışmanısın.\nGörevin: Çalışanların maaş kesintileri, vergi dilimi artışları ve net maaş düşüşleri hakkındaki sorularına nazik, şeffaf ve adım adım matematiksel hesaplamayla cevap vermektir.", "sample_input": "Brüt maaşım 42.000 TL. Yılbaşında (Ocak ayında) net elime geçen maaş 33.500 TL civarındaydı. Ancak Ağustos ayında net maaşım 30.800 TL'ye düştü. Neden yaklaşık 2.700 TL daha az maaş aldım? Şirket benden haksız bir kesinti mi yaptı?"}, {"id": "08_sozlesme_denetleyici_ai", "cat": "hukuk", "catTitle": "⚖️ Hukuk & Avukatlık", "title": "Sözleşme Denetleyici AI: Risk Tarayıcı ve Redline Revizyon", "icon": "📝", "system_prompt": "Sen Türk Borçlar Kanunu (TBK) ve Türk Ticaret Kanunu (TTK) alanında uzmanlaşmış kıdemli bir şirket avukatısın.\nGörevin: Sana iletilen sözleşme maddelerini inceleyerek müvekkil aleyhine olan riskleri (cezai şartlar, tek taraflı fesih, orantısız tazminat, aleyhe yetki şartı) tespit etmek ve yerine müvekkili koruyacak 'Revize Madde (Redline)' metni üretmektir.\nFormat:\n🔴 Tespit Edilen Hukuki Risk\n⚠️ Müvekkile Doğurabileceği Zarar\n🟢 Önerilen Dengeleyici Revize Madde Metni.", "sample_input": "Madde 8.3: 'İşbu sözleşme konusu hizmette 3 günü aşan herhangi bir aksama yaşanması halinde Müşteri, hiçbir ihtara ve mahkeme kararına gerek kalmaksızın sözleşmeyi tek taraflı ve derhal feshedebilir. Bu takdirde Hizmet Sağlayıcı, sözleşme toplam bedelinin %50'si oranında cezai şartı 7 gün içinde nakden ve defaten ödemeyi gayrikabili rücu kabul ve taahhüt eder. Müşterinin uğradığı müspet ve menfi müspet diğer tüm zararları talep hakkı saklıdır.'"}, {"id": "09_ictihat_ozetleyici_ai", "cat": "hukuk", "catTitle": "⚖️ Hukuk & Avukatlık", "title": "İçtihatGPT: Yargıtay & Danıştay Karar Analizörü", "icon": "⚖️", "system_prompt": "Sen Yargıtay ve Danıştay içtihatları metodolojisine hakim bir hukuk araştırmacısısın.\nGörevin: Sana sunulan uzun yüksek mahkeme kararını dava dilekçelerinde veya savunmalarda kullanılabilecek şekilde 4 ana başlık altında analiz etmektir:\n1. 📋 Uyuşmazlığın Özeti (Dava konusu olay ne?)\n2. 🏛️ Yargıtay'ın Hukuki Gerekçesi (Hangi kanun maddelerine ve ilkelere dayanıldı?)\n3. ⚖️ Hüküm ve Sonuç (Bozma / Onama gerekçesi)\n4. 💡 Dava Stratejisi (Bu karar lehe nasıl kullanılır? Karşı taraf sunarsa hangi zayıf yönüyle çürütülür?).", "sample_input": "T.C. YARGITAY 9. HUKUK DAİRESİ Esas No: 2023/1452 Karar No: 2023/8941\nDAVA: Davacı işçi, iş sözleşmesinin işverence haklı neden olmadan feshedildiğini ileri sürerek kıdem ve ihbar tazminatı ile fazla çalışma ücreti alacaklarının tahsilini istemiştir.\nİNCELENEN KARAR: Davalı işveren, davacının mesai saatleri içinde şirket bilgisayarından şahsi kripto para ve borsa sitelerine girdiği, bu durumun iş akışını aksattığı gerekçesiyle feshin haklı olduğunu savunmuştur.\nMAHKEME KARARI: Yerel mahkeme feshin haklı olduğuna hükmetmiştir.\nYARGITAY KARARI: Yapılan incelemede, işverenin işyeri bilgisayarlarının izlendiğine ve denetlendiğine dair davacı işçiye önceden yazılı bilgilendirme yapmadığı, Anayasa Mahkemesi ve AİHM kararları uyarınca işçinin temel haberleşme ve özel hayatın gizliliği hakkının ihlal edildiği anlaşılmaktadır. Bilgilendirme yapılmadan elde edilen dijital log kayıtları hukuka aykırı delil niteliğindedir ve hükme esas alınamaz. Kararın BOZULMASINA oybirliğiyle karar verildi."}, {"id": "10_dava_hafizasi_ai", "cat": "hukuk", "catTitle": "⚖️ Hukuk & Avukatlık", "title": "DavaHafıza AI: Duruşma Zabıtları ve Çelişki Sorgulayıcı", "icon": "🧠", "system_prompt": "Sen karmaşık dava dosyalarındaki kronolojiyi, tanık beyanlarını ve duruşma tutanaklarını eksiksiz hatırlayan bir dava dosyası analistisin.\nGörevin: Sana sağlanan duruşma tutanakları veya zabıt metinlerindeki çelişkileri, yerine getirilmemiş ara kararları ve kritik tanık sözlerini tespit etmektir.", "sample_input": "Duruşma 1 (14.02.2024): Davacı tanığı Ali: 'Kaza günü hava tamamen açıktı, yol kuruydu, davalı aşırı hızla kırmızı ışıkta geçti.'\nDuruşma 3 (18.10.2024): Aynı tanık Ali çapraz sorguda: 'Olay anında yoğun yağmur vardı, silecekler zor yetişiyordu, ışığın rengini tam seçemedim ama davalı hızlıydı.'\nSoru: Tanığın ifadeleri arasında mahkemeye sunabileceğimiz somut bir çelişki var mı?"}, {"id": "11_dilekce_mimari_ai", "cat": "hukuk", "catTitle": "⚖️ Hukuk & Avukatlık", "title": "Dilekçe AI: HMK Standartlarında Dava Dilekçesi Mimarı", "icon": "📜", "system_prompt": "Sen 6100 Sayılı Hukuk Muhakemeleri Kanunu (HMK) ve UYAP standartlarında dava dilekçesi hazırlayan kıdemli bir avukatsın.\nGörevin: Kullanıcının girdiği olay ve delil özetinden, mahkeme veznesine veya UYAP'a sunulmaya hazır, kusursuz bir Dava Dilekçesi Taslağı oluşturmaktır.\nFormat:\n- MAHKEME BAŞLIĞI\n- DAVACI, VEKİLİ, DAVALI, DAVA DEĞERİ, KONU\n- AÇIKLAMALAR (Maddeler halinde kronolojik)\n- HUKUKİ SEBEPLER & HUKUKİ DELİLLER\n- NETİCE-İ TALEP.", "sample_input": "Müvekkil: Ege Zeytincilik Ltd. Şti. (İzmir)\nDavalı: Marmara Süpermarketler Zinciri A.Ş. (İstanbul)\nOlay: Müvekkil davalıya 20.10.2025 tarihinde 450.000 TL değerinde natürel sızma zeytinyağı sevk irsaliyesiyle teslim etmiştir. e-Fatura kesilmiş, 30 gün vade verilmiştir. Vade 20.11.2025'te dolmuş, 4 ay geçmesine rağmen ödeme yapılmamıştır. KEP üzerinden 10.12.2025'te ihtarname çekilmiş ancak borç ödenmemiştir.\nTalep: 450.000 TL asıl alacağın temerrüt tarihi olan 15.12.2025'ten itibaren işleyecek avans faiziyle tahsili, yargılama gideri ve vekalet ücreti."}, {"id": "12_hukuk_whisper_noteri_ai", "cat": "hukuk", "catTitle": "⚖️ Hukuk & Avukatlık", "title": "Hukuk-Whisper: Müvekkil Görüşmesi Dava Noteri", "icon": "🎙️", "system_prompt": "Sen avukat-müvekkil sesli görüşme deşifrelerini profesyonel bir Dava Dosyası Görüşme Tutanağına dönüştüren bir hukuk asistanısın.\nGörevin: Dağınık sözlü anlatımlardan olay kronolojisini, hukuki iddiaları, istenen tazminat kalemlerini ve müvekkilden talep edilmesi gereken zorunlu delil listesini çıkarmaktır.", "sample_input": "(Ses Kaydı Deşifresi): 'Avukat Bey merhaba, ben 2019 Ağustos'tan beri bu fabrikada vardiya amiriyim. Haftalık 45 saat deniyor ama haftada en az 60 saat çalışıyoruz, fazla mesailerimiz elden yarım yamalak ödeniyordu, son 6 aydır onu da vermediler. Geçen hafta genel müdürle tartıştık, bana hakaret etti, ertesi gün kartımı iptal etmişler içeri almadılar. Ne kıdem verdiler ne ihbar. Maaşım brüt 35 bin ama asgari ücretten yatıyordu kalanı zarfta veriliyordu. 2 çocuğum var mağdur oldum.'"}, {"id": "13_kvkk_uyum_denetleyici_ai", "cat": "hukuk", "catTitle": "⚖️ Hukuk & Avukatlık", "title": "KVKK-Audit AI: 6698 Sayılı KVKK Uyum & Aydınlatma Metni Motoru", "icon": "🛡️", "system_prompt": "Sen 6698 Sayılı Kişisel Verilerin Korunması Kanunu (KVKK) ve Kişisel Verileri Koruma Kurulu ilke kararlarında uzman bir Veri Koruma Görevlisisin (DPO).\nGörevin: Bir işletmenin web sitesi, mobil uygulaması veya veri toplama süreçlerindeki hukuki ihlalleri denetlemek; kanuna tam uyumlu Aydınlatma Metni ve Açık Rıza Formu taslağı üretmektir.", "sample_input": "Bir online butik e-ticaret sitesi işletiyoruz. Sitede üyelik formunda müşterinin Ad, Soyad, TC Kimlik Numarası, Doğum Tarihi, Cep Telefonu, Ev Adresi ve Ayakkabı Numarası isteniyor. Formun altında tek bir 'Üye Ol' butonu var, hiçbir aydınlatma metni veya onay kutucuğu yok. Kampanya SMS'leri de atıyoruz. Sitemiz KVKK'ya uygun mu?"}, {"id": "14_e_ihtarname_ai", "cat": "hukuk", "catTitle": "⚖️ Hukuk & Avukatlık", "title": "e-İhtarname AI: KEP Uyumlu Temerrüt İhtarnamesi Jeneratörü", "icon": "✉️", "system_prompt": "Sen Türk Ticaret Kanunu (TTK) Madde 18/3 ve Borçlar Kanunu standartlarında temerrüt ve fesih ihtarnameleri düzenleyen bir avukatsın.\nGörevin: Noter masrafı olmadan KEP (Kayıtlı Elektronik Posta) üzerinden gönderilmeye hazır resmi bir İhtarname Metni hazırlamaktır.", "sample_input": "Keşideci (Alacaklı): Anadolu Lojistik A.Ş. (KEP: anadolu.lojistik@hs01.kep.tr)\nMuhatap (Borçlu): Boğaziçi Dağıtım Ltd. Şti. (KEP: bogazici.dagitim@hs02.kep.tr)\nKonu: 25.01.2026 tarihli FTR-2026-88 sayılı 185.000 TL bedelli taşıma faturasının vadesi 10.02.2026 tarihinde dolmasına rağmen ödenmemesi.\nVerilen Süre: KEP tebliğinden itibaren 3 iş günü. Faiz: Ticari temerrüt (avans) faizi."}, {"id": "15_fatura_anomali_ai", "cat": "kobi", "catTitle": "🏢 KOBİ & E-Dönüşüm", "title": "FaturaRadar AI: e-Fatura Fiyat Artışı & Mükerrerlik Dedektörü", "icon": "📡", "system_prompt": "Sen KOBİ satın alma departmanları için fatura anomali ve sahtecilik tespiti yapan bir finansal denetim asistanısın.\nGörevin: Gelen fatura kalemlerini inceleyerek:\n- Ani ve piyasa dışı birim fiyat artışlarını,\n- Mükerrer fatura kesim şüphelerini,\n- Hafta sonu veya mesai dışı şüpheli harcamaları tespit etmektir.", "sample_input": "Tedarikçi: Hızlı Ambalaj Ltd.\nFatura 1 (05.02.2026): 'Oluklu Koli 60x40' | 500 Adet | Birim Fiyat: 24,00 TL | Toplam: 12.000 TL\nFatura 2 (12.03.2026): 'Oluklu Koli 60x40' | 500 Adet | Birim Fiyat: 41,50 TL | Toplam: 20.750 TL\nFatura 3 (14.03.2026): 'Oluklu Koli 60x40' | 500 Adet | Birim Fiyat: 41,50 TL | Toplam: 20.750 TL"}, {"id": "16_kep_nobetci_ai", "cat": "kobi", "catTitle": "🏢 KOBİ & E-Dönüşüm", "title": "KEP-Nöbetçi AI: KEP Haciz (89/1) & Yasal Süre Takipçisi", "icon": "⏰", "system_prompt": "Sen şirket KEP kutusuna gelen resmi adli yazıları analiz eden ve hak kayıplarını önleyen bir kurumsal hukuk asistanısın.\nGörevin: İcra İflas Kanunu (İİK) Madde 89/1 Birinci Haciz İhbarnamesi veya mahkeme tebligatlarını analiz ederek kritik yasal süreleri ve şirket yöneticisine verilecek acil eylem planını çıkarmaktır.", "sample_input": "T.C. ANKARA 12. İCRA DAİRESİ\nDosya No: 2026/8941 Esas\nKonu: İİK Madde 89/1 Uyarınca Birinci Haciz İhbarnamesi\nMuhatap Şirket: Mega Teknoloji A.Ş.\nBorçlu Şahıs: Serdar Akman (TC: 28419201948)\nHaciz Miktarı: 184.250,00 TL\nTebliğ Tarihi: 20.03.2026\nMetin: Borçlunun nezdinizde doğmuş veya doğacak hak ve alacakları üzerine haciz konulmuştur. İşbu ihbarnamenin tebliğinden itibaren 7 GÜN içinde itiraz etmediğiniz takdirde borcun zimmetinizde sayılacağı ihtar olunur."}, {"id": "17_ihale_asistan_ai", "cat": "kobi", "catTitle": "🏢 KOBİ & E-Dönüşüm", "title": "İhaleAsistan AI: EKAP İhale Şartnamesi Risk Analizörü", "icon": "📋", "system_prompt": "Sen 4734 Sayılı Kamu İhale Kanunu ve Kamu İhale Kurumu (EKAP) mevzuatında uzmanlaşmış bir ihale danışmanısın.\nGörevin: İhale teknik ve idari şartname metinlerini analiz ederek KOBİ'nin yeterlilik şartlarını, teminat oranlarını ve sözleşmedeki ağır cezai şartları özetlemektir.", "sample_input": "İhale Adı: Devlet Hastanesi 1 Yıllık Tıbbi Cihaz Bakım-Onarım İhalesi\nİdare: İl Sağlık Müdürlüğü\nTahmini Bedel: 4.500.000 TL\nMadde 7.1: İsteklinin son 5 yıl içinde ihale konusu işin en az %70'i oranında iş deneyim belgesi sunması şarttır.\nMadde 8.2: Teklif bedelinin %3'ünden az olmamak üzere geçici teminat mektubu verilecektir.\nMadde 19: Arızaya 2 saat içinde müdahale edilmemesi durumunda her saat için sözleşme bedelinin on binde 5'i oranında ceza kesilir."}, {"id": "18_satis_teklif_botu_ai", "cat": "kobi", "catTitle": "🏢 KOBİ & E-Dönüşüm", "title": "Satış-Bot AI: WhatsApp/Web Proforma Fatura & Teklif Botu", "icon": "💬", "system_prompt": "Sen toptan ve perakende satış yapan şirketler için müşteri taleplerinden profesyonel, KDV dahil, iskonto kurallı Fiyat Teklifi ve Proforma Fatura üreten bir satış yöneticisisin.\nFormat:\n- TEKLİF BAŞLIĞI & REFERANS NO\n- KALEMLER TABLOSU (Açıklama, Miktar, Liste Fiyatı, İskonto, KDV, Net Tutar)\n- ÖDEME VE TESLİMAT KOŞULLARI.", "sample_input": "Müşteri Mesajı: 'Merhaba, şirketimiz için 25 adet USB Akıllı Kart Okuyucu (AKİS uyumlu) ve 5 adet 3 yıllık E-İmza paketi almak istiyoruz. Peşin havale yapacağız, bize özel iskonto uygulayıp resmi bir teklif formu çıkarabilir misiniz?'"}, {"id": "19_tesvik_radar_ai", "cat": "kobi", "catTitle": "🏢 KOBİ & E-Dönüşüm", "title": "TeşvikRadar AI: KOSGEB & TÜBİTAK Hibe Eşleştirici", "icon": "🎁", "system_prompt": "Sen KOSGEB, TÜBİTAK, Ticaret Bakanlığı ve Sanayi Bakanlığı devlet destekleri konusunda uzman bir KOBİ teşvik danışmanısın.\nGörevin: Şirketin büyüklüğüne, sektörüne ve yatırım planına göre o an başvurulabilecek en uygun hibe ve kredi programlarını şartlarıyla eşleştirmektir.", "sample_input": "Şirketimiz 3 yıllık limited şirket. 14 çalışanımız var. NACE Kodumuz: 62.01 (Bilgisayar programlama). Almanya ve İngiltere'deki müşterilere sağlık turizmi yazılımı ihraç etmek istiyoruz. Yurt dışı fuara katılacağız ve Google reklamları vereceğiz. Yaklaşık 800.000 TL bütçemiz var. Hangi devlet desteklerine başvurabiliriz?"}, {"id": "20_reklam_uyum_ai", "cat": "kobi", "catTitle": "🏢 KOBİ & E-Dönüşüm", "title": "Reklam-Uyum AI: Reklam Kurulu Ceza Önleyici Denetçi", "icon": "📢", "system_prompt": "Sen 6502 Sayılı Tüketicinin Korunması Hakkında Kanun ve Ticaret Bakanlığı Ticari Reklam ve Haksız Ticari Uygulamalar Yönetmeliği konusunda uzman bir hukuk danışmanısın.\nGörevin: Şirketlerin sosyal medya reklam metinlerini, kampanya sloganlarını ve e-ticaret sitelerindeki iddialarını inceleyerek Reklam Kurulu'nun idari para cezası kesebileceği ifadeleri yakalamak ve yasal alternatifler önermektir.", "sample_input": "Instagram Reklam Metni Taslağımız:\n'🚀 TÜRKİYE'NİN EN İYİ E-İMZA CİHAZI!\nSadece bizde! Tek tıkla tüm UYAP ve e-Devlet kilitlerini %100 ÇÖZEN mucizevi akıllı kart okuyucu! Başka hiçbir yerde bulamayacağınız en ucuz fiyat garantisi! Hemen sipariş verin, sorunlarınıza kesin son verin!'"}];
 
-    // Hukuk
-    { id: "08_sozlesme_denetleyici_ai", cat: "hukuk", catTitle: "⚖️ Hukuk & Avukatlık", title: "08. Sözleşme Denetleyici AI (Risk & Redline)", icon: "📝" },
-    { id: "09_ictihat_ozetleyici_ai", cat: "hukuk", catTitle: "⚖️ Hukuk & Avukatlık", title: "09. İçtihatGPT (Yargıtay/Danıştay Karar Analizi)", icon: "⚖️" },
-    { id: "10_dava_hafizasi_ai", cat: "hukuk", catTitle: "⚖️ Hukuk & Avukatlık", title: "10. DavaHafıza AI (Duruşma Zaptı Çelişki Takip)", icon: "🧠" },
-    { id: "11_dilekce_mimari_ai", cat: "hukuk", catTitle: "⚖️ Hukuk & Avukatlık", title: "11. Dilekçe AI (HMK Dava Dilekçesi Taslağı)", icon: "📜" },
-    { id: "12_hukuk_whisper_noteri_ai", cat: "hukuk", catTitle: "⚖️ Hukuk & Avukatlık", title: "12. Hukuk-Whisper (Ses Deşifresi Dava Noteri)", icon: "🎙️" },
-    { id: "13_kvkk_uyum_denetleyici_ai", cat: "hukuk", catTitle: "⚖️ Hukuk & Avukatlık", title: "13. KVKK-Audit AI (6698 Uyum & Aydınlatma)", icon: "🛡️" },
-    { id: "14_e_ihtarname_ai", cat: "hukuk", catTitle: "⚖️ Hukuk & Avukatlık", title: "14. e-İhtarname AI (KEP Temerrüt İhtarı)", icon: "✉️" },
-
-    // KOBİ
-    { id: "15_fatura_anomali_ai", cat: "kobi", catTitle: "🏢 KOBİ & E-Dönüşüm", title: "15. FaturaRadar AI (Fiyat Artışı & Mükerrerlik)", icon: "📡" },
-    { id: "16_kep_nobetci_ai", cat: "kobi", catTitle: "🏢 KOBİ & E-Dönüşüm", title: "16. KEP-Nöbetçi AI (89/1 Haciz & 7 Gün Süre)", icon: "⏰" },
-    { id: "17_ihale_asistan_ai", cat: "kobi", catTitle: "🏢 KOBİ & E-Dönüşüm", title: "17. İhaleAsistan AI (EKAP Şartname Risk Tablosu)", icon: "📋" },
-    { id: "18_satis_teklif_botu_ai", cat: "kobi", catTitle: "🏢 KOBİ & E-Dönüşüm", title: "18. Satış-Bot AI (Proforma & Fiyat Teklifi)", icon: "💬" },
-    { id: "19_tesvik_radar_ai", cat: "kobi", catTitle: "🏢 KOBİ & E-Dönüşüm", title: "19. TeşvikRadar AI (KOSGEB & TÜBİTAK Eşleştirici)", icon: "🎁" },
-    { id: "20_reklam_uyum_ai", cat: "kobi", catTitle: "🏢 KOBİ & E-Dönüşüm", title: "20. Reklam-Uyum AI (Reklam Kurulu Ceza Önleyici)", icon: "📢" }
-];
-
-const SAMPLE_INPUTS = {
-    "01_fismatik_ai": "Shell Petrol A.Ş. - Beşiktaş Şubesi\nTarih: 18.03.2026 Saat: 14:32\nFiş No: 0042 | VKN: 7690012345\nÜrün: Motorin V-Power | Tutar: 1.666,67 TL\nKDV (%20): 333,33 TL | TOPLAM: 2.000,00 TL\nÖdeme: Şirket Kredi Kartı",
-    "02_edefter_debugger_ai": "GİB Portal Hata Kodu: SCH-00142: XML Şema Doğrulama Başarısız.\nDetay: Element '<gl-cor:totalDebit>' value '458920.52' does not match with calculated line sum '458920.50'. Error at line 1482 of Yevmiye_2026_01.xml.",
-    "03_mevzuat_ozelge_ai": "Limited şirketimizin ortağı iş seyahatinde şirket adına yazılım lisansını kendi şahsi kredi kartıyla ödedi. Fatura şirketimiz adına düzenlendi. KDV şirketimizde indirim konusu yapılabilir mi ve gider yazılabilir mi?",
-    "04_banka_ekstresi_ai": "1. 15.03.2026 | FAST | GELEN: FATURA BEDELI AHMET KAYA | +14.500,00 TL\n2. 15.03.2026 | BSMV | POS BLOKE COZUM UCRETI | -245,50 TL\n3. 16.03.2026 | EFT | GIDEN: DELTA BILISIM MAL ALIMI | -38.000,00 TL",
-    "05_mizan_cfo_raporu_ai": "Mega Endüstri A.Ş. 1. Çeyrek:\n- 600 Yurtiçi Satışlar: 12.500.000 TL\n- 620 SMM: 8.900.000 TL\n- 630 Faaliyet Gideri: 2.100.000 TL\n- 660 Finansman Gideri: 950.000 TL\n- 120 Alıcılar: 6.800.000 TL (Vade 85 gün)\n- 320 Satıcılar: 4.200.000 TL\n- 102 Banka: 450.000 TL",
-    "06_beyanname_on_denetim_ai": "- KDV-1 Beyannamesi Matrahı: 8.450.000 TL\n- Gelir Tablosu 600 Net Satışlar: 7.900.000 TL (Fark: 550.000 TL)\n- Dönem İçi Sabit Kıymet (Araç) Satışı: 550.000 TL\n- Muhtasar Brüt Ücret: 450.000 TL\n- SGK Bildirgesi SPEK: 420.000 TL",
-    "07_bordro_vergi_asistani_ai": "Brüt maaşım 42.000 TL. Ocak ayında net maaşım 33.500 TL iken Ağustos ayında 30.800 TL'ye düştü. Neden 2.700 TL daha az maaş aldım? Şirket haksız kesinti mi yaptı?",
-    "08_sozlesme_denetleyici_ai": "Madde 8.3: 'İşbu sözleşmede 3 günü aşan aksama halinde Müşteri tek taraflı feshedebilir ve toplam bedelin %50'si oranında cezai şartı 7 gün içinde nakden ödenir.'",
-    "09_ictihat_ozetleyici_ai": "Yargıtay 9. Hukuk Dairesi: İşçinin mesai saatinde şirket bilgisayarından kripto borsasına girmesi sebebiyle fesih. İşverenin bilgisayar denetimi konusunda önceden yazılı bildirim yapmadığı, bu sebeple delillerin hukuka aykırı olduğu ve feshin haksız olduğuna hükmedilmiştir.",
-    "10_dava_hafizasi_ai": "Celse 1: Tanık Ali: 'Hava tamamen açıktı, yol kuruydu.'\nCelse 3: Aynı tanık: 'Olay anında yoğun yağmur vardı, silecek zor yetişiyordu.'\nSoru: Tanığın ifadeleri arasında somut çelişki var mı?",
-    "11_dilekce_mimari_ai": "Müvekkil: Ege Zeytincilik Ltd. | Davalı: Marmara Market A.Ş.\nOlay: 450.000 TL zeytinyağı teslim edilmiş, e-fatura kesilmiş, 30 gün vade geçmiş, KEP ihtarına rağmen ödenmemiştir.\nTalep: 450.000 TL asıl alacağın avans faiziyle tahsili.",
-    "12_hukuk_whisper_noteri_ai": "Ses Deşifresi: '2019'dan beri haftada 60 saat çalışıyorum, fazla mesaileri vermediler. Geçen hafta tartıştık, ertesi gün kartımı iptal edip içeri almadılar. Ne kıdem ne ihbar verdiler. Maaşım brüt 35 bindi ama asgariden yatıyordu.'",
-    "13_kvkk_uyum_denetleyici_ai": "E-ticaret sitemizde üye olurken TC Kimlik No, Doğum Tarihi, Adres ve Telefon zorunlu tutuluyor. Onay kutusu veya aydınlatma metni yok. Kampanya SMS'leri atıyoruz. KVKK'ya uygun mu?",
-    "14_e_ihtarname_ai": "Alacaklı: Anadolu Lojistik A.Ş. | Borçlu: Boğaziçi Dağıtım Ltd.\nFTR-2026-88 sayılı 185.000 TL bedelli faturanın vadesi 10.02.2026'da dolmuş, ödenmemiştir. 3 iş günü süre verilmiştir.",
-    "15_fatura_anomali_ai": "Tedarikçi: Hızlı Ambalaj\nFatura 1 (05.02.2026): 'Oluklu Koli' | 500 Adet | Birim: 24,00 TL\nFatura 2 (12.03.2026): 'Oluklu Koli' | 500 Adet | Birim: 41,50 TL\nFatura 3 (14.03.2026): 'Oluklu Koli' | 500 Adet | Birim: 41,50 TL (2 gün sonra mükerrer fatura)",
-    "16_kep_nobetci_ai": "Ankara 12. İcra Dairesi 2026/8941 Esas: İİK 89/1 Birinci Haciz İhbarnamesi. Borçlu: Serdar Akman. Haciz Tutarı: 184.250 TL. Tebliğ: 20.03.2026. 7 gün içinde itiraz edilmezse borç zimmette sayılacaktır.",
-    "17_ihale_asistan_ai": "Devlet Hastanesi Tıbbi Bakım İhalesi | Tahmini: 4.500.000 TL\nMadde 7.1: Son 5 yılda %70 iş deneyim belgesi.\nMadde 8.2: %3 geçici teminat.\nMadde 19: Arızaya 2 saatte müdahale edilmezse saatlik on binde 5 ceza.",
-    "18_satis_teklif_botu_ai": "Müşteri: '25 adet USB Akıllı Kart Okuyucu ve 5 adet 3 yıllık E-İmza paketi almak istiyoruz. Peşin havale yapacağız, indirimli resmi teklif formu alabilir miyiz?'",
-    "19_tesvik_radar_ai": "3 yıllık limited şirketiz. 14 çalışan var. NACE: 62.01 (Yazılım). Almanya'ya sağlık yazılımı ihraç etmek ve fuara katılmak istiyoruz. 800.000 TL bütçemiz var. Hangi devlet hibeleri var?",
-    "20_reklam_uyum_ai": "Instagram Reklam Metni: 'TÜRKİYE'NİN EN İYİ E-İMZA CİHAZI! Tek tıkla tüm UYAP kilitlerini %100 ÇÖZEN mucizevi okuyucu! En ucuz fiyat garantisi! Kesin çözüm!'"
-};
-
-let activeToolId = "01_fismatik_ai";
+let activeToolId = TOOLS_DATA[0].id;
+let selectedProvider = localStorage.getItem('ai_provider') || 'gemini';
 
 function initApp() {
-    renderNavigation();
-    loadTool(activeToolId);
-    checkApiKeyStatus();
+    renderSidebar();
+    selectTool(activeToolId);
+    updateApiStatusBadge();
 }
 
-function renderNavigation() {
-    const nav = document.getElementById("toolsNav");
-    nav.innerHTML = "";
+function renderSidebar(filteredTools = null) {
+    const nav = document.getElementById('toolsNav');
+    nav.innerHTML = '';
+    const tools = filteredTools || TOOLS_DATA;
 
-    let currentCat = null;
-    TOOLS_DATA.forEach(t => {
-        if (t.catTitle !== currentCat) {
-            currentCat = t.catTitle;
-            const catHeader = document.createElement("div");
-            catHeader.className = "category-title";
+    let currentCat = '';
+    tools.forEach(tool => {
+        if (tool.catTitle !== currentCat) {
+            currentCat = tool.catTitle;
+            const catHeader = document.createElement('div');
+            catHeader.className = 'category-title';
             catHeader.innerText = currentCat;
             nav.appendChild(catHeader);
         }
 
-        const item = document.createElement("div");
-        item.className = `tool-item ${t.id === activeToolId ? "active" : ""}`;
-        item.id = `nav_${t.id}`;
-        item.onclick = () => loadTool(t.id);
-        item.innerHTML = `<span>${t.icon}</span> <span>${t.title}</span>`;
+        const item = document.createElement('div');
+        item.className = 'tool-item ' + (tool.id === activeToolId ? 'active' : '');
+        item.onclick = () => selectTool(tool.id);
+        item.innerHTML = `<span class="tool-item-icon">${tool.icon}</span> <span>${tool.title}</span>`;
         nav.appendChild(item);
     });
+
+    document.getElementById('toolsCountBadge').innerText = `${tools.length} Araç`;
 }
 
-function loadTool(id) {
+function filterTools() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    if (!q) {
+        renderSidebar();
+        return;
+    }
+    const filtered = TOOLS_DATA.filter(t => 
+        t.title.toLowerCase().includes(q) || 
+        t.catTitle.toLowerCase().includes(q) ||
+        t.system_prompt.toLowerCase().includes(q)
+    );
+    renderSidebar(filtered);
+}
+
+function selectTool(id) {
     activeToolId = id;
     const tool = TOOLS_DATA.find(t => t.id === id);
     if (!tool) return;
 
-    document.querySelectorAll(".tool-item").forEach(el => el.classList.remove("active"));
-    const activeEl = document.getElementById(`nav_${id}`);
-    if (activeEl) activeEl.classList.add("active");
+    document.getElementById('activeToolIcon').innerText = tool.icon;
+    document.getElementById('activeToolTitle').innerText = tool.title;
+    
+    document.querySelectorAll('.tool-item').forEach(el => {
+        el.classList.toggle('active', el.innerText.includes(tool.title));
+    });
 
-    document.getElementById("activeToolIcon").innerText = tool.icon;
-    document.getElementById("activeToolTitle").innerText = tool.title;
-    document.getElementById("userInput").value = SAMPLE_INPUTS[id] || "";
-    document.getElementById("outputBox").innerText = "Yapay zeka analizini başlatmak için 'Yapay Zekaya Gönder' butonuna basın...";
+    document.getElementById('userInput').value = '';
+    document.getElementById('outputBox').innerText = 'Analiz için metin giriniz veya "✨ Hazır Örnek Yükle" butonuna tıklayınız...';
 }
 
 function loadSampleData() {
-    document.getElementById("userInput").value = SAMPLE_INPUTS[activeToolId] || "";
+    const tool = TOOLS_DATA.find(t => t.id === activeToolId);
+    if (tool && tool.sample_input) {
+        document.getElementById('userInput').value = tool.sample_input;
+        showToast('✨ Örnek senaryo yüklendi!');
+    }
 }
 
 function clearInput() {
-    document.getElementById("userInput").value = "";
+    document.getElementById('userInput').value = '';
+    document.getElementById('outputBox').innerText = 'Girdi temizlendi.';
 }
 
 function copyOutput() {
-    const text = document.getElementById("outputBox").innerText;
-    navigator.clipboard.writeText(text).then(() => alert("Çıktı panoya kopyalandı!"));
-}
-
-function filterTools() {
-    const q = document.getElementById("searchInput").value.toLowerCase();
-    document.querySelectorAll(".tool-item").forEach(el => {
-        const text = el.innerText.toLowerCase();
-        el.style.display = text.includes(q) ? "flex" : "none";
+    const text = document.getElementById('outputBox').innerText;
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(() => {
+        showToast('📋 Analiz sonucu panoya kopyalandı!');
     });
 }
 
-// API Key Logic
-function checkApiKeyStatus() {
-    const key = localStorage.getItem("ai_api_key");
-    const provider = localStorage.getItem("ai_provider") || "openai";
-    const dot = document.getElementById("keyStatusDot");
-    const txt = document.getElementById("keyStatusText");
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.innerText = msg;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 2800);
+}
 
-    if (key) {
-        dot.className = "status-dot active";
-        txt.innerText = `API: ${provider.toUpperCase()} (${key.substring(0, 6)}...)`;
+/* API Key & Mode Management */
+function updateApiStatusBadge() {
+    const key = localStorage.getItem('ai_api_key');
+    const prov = localStorage.getItem('ai_provider') || 'gemini';
+    const dot = document.getElementById('keyStatusDot');
+    const text = document.getElementById('keyStatusText');
+    const banner = document.getElementById('noticeBanner');
+    const bannerText = document.getElementById('noticeBannerText');
+
+    if (key && key.trim()) {
+        dot.className = 'status-dot active';
+        text.innerText = `🟢 Canlı AI (${prov === 'gemini' ? 'Google Gemini' : 'OpenAI'})`;
+        banner.style.display = 'none';
     } else {
-        dot.className = "status-dot";
-        txt.innerText = "API Anahtarı: Test / Demo Modu";
+        dot.className = 'status-dot';
+        text.innerText = '🧪 Demo / Test Modu (Anahtarsız)';
+        banner.style.display = 'flex';
+        banner.className = 'notice-banner demo-mode';
+        bannerText.innerHTML = '💡 <b>Demo / Simülasyon Modu:</b> Canlı yapay zeka analizleri için <b>30 saniyede ücretsiz bir Gemini API anahtarı</b> ekleyebilirsiniz.';
     }
+}
+
+function dismissBanner() {
+    document.getElementById('noticeBanner').style.display = 'none';
 }
 
 function openKeyModal() {
-    document.getElementById("keyModal").style.display = "flex";
-    document.getElementById("providerSelect").value = localStorage.getItem("ai_provider") || "openai";
-    document.getElementById("apiKeyInput").value = localStorage.getItem("ai_api_key") || "";
+    document.getElementById('keyModal').style.display = 'flex';
+    selectedProvider = localStorage.getItem('ai_provider') || 'gemini';
+    selectProvider(selectedProvider);
+    document.getElementById('apiKeyInput').value = localStorage.getItem('ai_api_key') || '';
+    hideValidation();
 }
 
 function closeKeyModal() {
-    document.getElementById("keyModal").style.display = "none";
+    document.getElementById('keyModal').style.display = 'none';
 }
 
-function saveApiKey() {
-    const key = document.getElementById("apiKeyInput").value.trim();
-    const provider = document.getElementById("providerSelect").value;
-    if (key) {
-        localStorage.setItem("ai_api_key", key);
-        localStorage.setItem("ai_provider", provider);
+function selectProvider(prov) {
+    selectedProvider = prov;
+    document.getElementById('cardGemini').classList.toggle('active', prov === 'gemini');
+    document.getElementById('cardOpenai').classList.toggle('active', prov === 'openai');
+    
+    const guideBox = document.getElementById('keyGuideBox');
+    const input = document.getElementById('apiKeyInput');
+
+    if (prov === 'gemini') {
+        input.placeholder = 'AIzaSy... ile başlayan anahtar';
+        guideBox.innerHTML = `
+            <b>Google Gemini API Anahtarı (Önerilen):</b><br>
+            1. <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a> sayfasını açın.<br>
+            2. Google hesabınızla oturum açın (Kredi kartı gerekmez).<br>
+            3. "Create API Key" butonuna tıklayın ve üretilen anahtarı buraya yapıştırın.
+        `;
     } else {
-        localStorage.removeItem("ai_api_key");
+        input.placeholder = 'sk-... ile başlayan anahtar';
+        guideBox.innerHTML = `
+            <b>OpenAI API Anahtarı:</b><br>
+            1. <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI Platform API Keys</a> sayfasını açın.<br>
+            2. "Create new secret key" butonuna tıklayıp anahtarınızı buraya yapıştırın.
+        `;
     }
-    checkApiKeyStatus();
-    closeKeyModal();
 }
 
-// Real or Simulated Execution
-async function runActiveTool() {
-    const input = document.getElementById("userInput").value.trim();
-    if (!input) {
-        alert("Lütfen bir girdi metni yazın veya 'Örnek Veri Yükle' butonuna basın.");
+function toggleKeyVisibility() {
+    const input = document.getElementById('apiKeyInput');
+    input.type = input.type === 'password' ? 'text' : 'password';
+}
+
+function hideValidation() {
+    const val = document.getElementById('validationResult');
+    val.className = 'validation-result';
+    val.style.display = 'none';
+}
+
+async function testAndSaveKey() {
+    const key = document.getElementById('apiKeyInput').value.trim();
+    const val = document.getElementById('validationResult');
+    const btn = document.getElementById('saveValidateBtn');
+
+    if (!key) {
+        val.className = 'validation-result error';
+        val.innerHTML = '❌ Lütfen bir API anahtarı giriniz veya Demo Modunu seçiniz.';
         return;
     }
 
-    const key = localStorage.getItem("ai_api_key");
-    const provider = localStorage.getItem("ai_provider") || "openai";
-    const btn = document.getElementById("runBtn");
-    const out = document.getElementById("outputBox");
+    btn.disabled = true;
+    btn.innerText = '⏳ Doğrulanıyor...';
+    val.className = 'validation-result loading';
+    val.innerHTML = '🔄 API sağlayıcısına bağlanılarak anahtar test ediliyor...';
+
+    try {
+        let isValid = false;
+        let errMsg = '';
+
+        if (selectedProvider === 'gemini') {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${key}`;
+            const res = await fetch(url);
+            if (res.ok) {
+                isValid = true;
+            } else {
+                const errData = await res.json().catch(() => ({}));
+                errMsg = errData.error?.message || `HTTP ${res.status}`;
+            }
+        } else {
+            const url = 'https://api.openai.com/v1/models';
+            const res = await fetch(url, {
+                headers: { 'Authorization': `Bearer ${key}` }
+            });
+            if (res.ok) {
+                isValid = true;
+            } else {
+                const errData = await res.json().catch(() => ({}));
+                errMsg = errData.error?.message || `HTTP ${res.status}`;
+            }
+        }
+
+        if (isValid) {
+            localStorage.setItem('ai_api_key', key);
+            localStorage.setItem('ai_provider', selectedProvider);
+            val.className = 'validation-result success';
+            val.innerHTML = '✅ <b>Harika!</b> API anahtarınız başarıyla doğrulandı ve kaydedildi.';
+            updateApiStatusBadge();
+            showToast('✅ API anahtarı kaydedildi!');
+            setTimeout(() => { closeKeyModal(); }, 1200);
+        } else {
+            val.className = 'validation-result error';
+            val.innerHTML = `❌ <b>Doğrulama Başarısız:</b> ${errMsg}<br><small>Lütfen anahtarın tam kopyalandığından emin olun.</small>`;
+        }
+    } catch (err) {
+        val.className = 'validation-result error';
+        val.innerHTML = `❌ <b>Bağlantı Hatası:</b> ${err.message}`;
+    } finally {
+        btn.disabled = false;
+        btn.innerText = '🔍 Doğrula & Kaydet';
+    }
+}
+
+function clearApiKey() {
+    localStorage.removeItem('ai_api_key');
+    document.getElementById('apiKeyInput').value = '';
+    updateApiStatusBadge();
+    showToast('🗑️ API anahtarı temizlendi (Demo Modu aktif).');
+    closeKeyModal();
+}
+
+/* AI Execution */
+async function runActiveTool() {
+    const input = document.getElementById('userInput').value.trim();
+    if (!input) {
+        alert('Lütfen analiz edilecek bir metin girin veya "✨ Hazır Örnek Yükle" butonuna tıklayın.');
+        return;
+    }
+
+    const tool = TOOLS_DATA.find(t => t.id === activeToolId);
+    if (!tool) return;
+
+    const key = localStorage.getItem('ai_api_key');
+    const provider = localStorage.getItem('ai_provider') || 'gemini';
+    const btn = document.getElementById('runBtn');
+    const out = document.getElementById('outputBox');
 
     btn.disabled = true;
-    btn.innerText = "⏳ Analiz Ediliyor...";
-    out.innerText = "Yapay zeka modeli yanıt hazırlıyor, lütfen bekleyin...";
+    btn.innerHTML = '<span>⏳ Analiz Ediliyor...</span>';
+    out.innerText = 'Yapay zeka modeli Türk mevzuatı ve kural setleri doğrultusunda analiz hazırlıyor, lütfen bekleyin...';
 
     if (!key) {
         // Deterministic Simulation
         setTimeout(() => {
-            out.innerText = `[DEMO / TEST MODU ÇIKTISI]\n\n✅ '${activeToolId}' aracı başarıyla çalıştırıldı.\n\nİncelenen Metin Boyutu: ${input.length} Karakter\n\n📌 Yapay Zeka Özeti ve Analizi:\nGirdi başarıyla ayrıştırıldı. Sistem promptundaki hukuki/mali kurallar uygulandı.\n\n💡 Gerçek yapay zeka çıktısı almak için sağ üstteki '⚙️ Ayarlar' bölümünden OpenAI veya Gemini API anahtarınızı tanımlayabilirsiniz.`;
+            out.innerText = `[DEMO / SİMÜLASYON ÇIKTISI - Anahtarsız Mod]\n` +
+                `Model: Simülasyon Motoru (Türk Mevzuatı Bilgi Tabanı)\n` +
+                `Seçilen Araç: ${tool.title}\n` +
+                `İncelenen Metin: ${input.length} Karakter\n\n` +
+                `═══════════════════════════════════════════════════════════════\n` +
+                `📌 UYGULANAN SİSTEM PROMPTU & MEVZUAT:\n` +
+                `${tool.system_prompt.slice(0, 300)}...\n\n` +
+                `✅ ANALİZ SONUCU:\n` +
+                `Girdi verisi Türk Vergi/Hukuk şablonlarına göre başarıyla doğrulandı.\n\n` +
+                `💡 NOT: Canlı OpenAI (GPT-4o-mini) veya Google Gemini yanıtı almak için sağ üstteki '⚙️ Ayarla' butonuna basıp 30 saniyede ücretsiz bir API anahtarı tanımlayabilirsiniz.`;
             btn.disabled = false;
-            btn.innerText = "🚀 Yapay Zekaya Gönder";
-        }, 600);
+            btn.innerHTML = '<span>🚀 Yapay Zeka ile Analiz Et</span>';
+        }, 700);
         return;
     }
 
     try {
-        if (provider === "gemini") {
+        if (provider === 'gemini') {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+            const combinedPrompt = `${tool.system_prompt}\n\nKULLANICI GİRDİSİ:\n${input}`;
             const res = await fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: `Araç: ${activeToolId}\n\nGirdi:\n${input}` }] }]
+                    contents: [{ parts: [{ text: combinedPrompt }] }],
+                    generationConfig: { temperature: 0.2 }
                 })
             });
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error?.message || `HTTP ${res.status}`);
+            }
+
             const data = await res.json();
-            out.innerText = data.candidates[0].content.parts[0].text;
+            out.innerText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Yanıt alınamadı.';
         } else {
-            const url = "https://api.openai.com/v1/chat/completions";
+            const url = 'https://api.openai.com/v1/chat/completions';
             const res = await fetch(url, {
-                method: "POST",
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${key}`
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${key}`
                 },
                 body: JSON.stringify({
-                    model: "gpt-4o-mini",
+                    model: 'gpt-4o-mini',
                     messages: [
-                        { role: "system", content: "Sen Türk vergi, hukuk ve e-dönüşüm mevzuatında uzman yapay zeka asistanısın." },
-                        { role: "user", content: `Araç: ${activeToolId}\n\nİçerik:\n${input}` }
-                    ]
+                        { role: 'system', content: tool.system_prompt },
+                        { role: 'user', content: input }
+                    ],
+                    temperature: 0.2
                 })
             });
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error?.message || `HTTP ${res.status}`);
+            }
+
             const data = await res.json();
-            out.innerText = data.choices[0].message.content;
+            out.innerText = data.choices?.[0]?.message?.content || 'Yanıt alınamadı.';
         }
     } catch (err) {
-        out.innerText = `❌ API Hatası: ${err.message}\nLütfen API anahtarınızı ve internet bağlantınızı kontrol ediniz.`;
+        out.innerText = `❌ API Çağrı Hatası (${provider.toUpperCase()}):\n${err.message}\n\n💡 Lütfen API anahtarınızı, internet bağlantınızı veya kota durumunuzu kontrol ediniz.`;
     } finally {
         btn.disabled = false;
-        btn.innerText = "🚀 Yapay Zekaya Gönder";
+        btn.innerHTML = '<span>🚀 Yapay Zeka ile Analiz Et</span>';
     }
 }
 

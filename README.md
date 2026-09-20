@@ -71,61 +71,73 @@ Bu proje; ağır kütüphanelere (LangChain, LlamaIndex, ChromaDB vb.) gerek duy
 
 ---
 
-## 🚀 Hızlı Başlangıç
+## 🚀 Süper Kolay Başlangıç & Kurulum
 
-### Seçenek A: Web Portalı Üzerinden Kullanım (Önerilen)
-
-Portal tamamen tek sayfa HTML/JS'dir. Hiçbir sunucu kurulumu gerektirmez.
-
-1. Depoyu klonlayın veya zip olarak indirin:
-   ```bash
-   git clone https://github.com/eimza-kep/turkiye-yapay-zeka-araclari.git
-   cd turkiye-yapay-zeka-araclari
-   ```
-2. `web/index.html` dosyasını çift tıklayarak tarayıcınızda açın (veya yerel sunucu başlatın):
-   ```bash
-   python -m http.server 8000 --directory web
-   ```
-   Tarayıcınızda `http://localhost:8000` adresine gidin.
-3. Sağ üstteki **"API Anahtarı Ayarları"** butonuna tıklayın:
-   - OpenAI (`sk-...`) veya Google Gemini (`AIzaSy...`) anahtarınızı girip kaydedin.
-4. Sol menüden dilediğiniz aracı seçin, **"Örnek Yükle"** butonuna basıp ardından **"Yapay Zeka ile Analiz Et"** butonuna tıklayın!
+Bu projeyi kullanmak için terminal komutları bilmenize gerek yoktur. İster tek tıkla web arayüzünü açabilir, ister interaktif sihirbazı çalıştırabilirsiniz:
 
 ---
 
-### Seçenek B: Komut Satırından (CLI) Kullanım
+### 1️⃣ Yöntem 1: Windows'ta Tek Tıkla Başlatma (En Kolay)
 
-Her araç bağımsız bir Python betiğidir.
+Depo klasöründeki dosyalarla doğrudan başlayabilirsiniz:
+- **`Baslat.bat`** : Çift tıklayın; sisteminizdeki Python'u otomatik bulur ve interaktif Türkçe menüyü açar. (Python yoksa doğrudan Web Portalını tarayıcınızda açar).
+- **`Web-Portali.bat`** : Çift tıklayın; 20 AI aracının bulunduğu görsel web arayüzünü doğrudan varsayılan internet tarayıcınızda açar.
+- **`baslat.sh`** (Mac & Linux): Terminalde `./baslat.sh` çalıştırarak sihirbazı veya web portalını açabilirsiniz.
 
-#### 1. Test Modu (API Anahtarı Olmadan Deneme)
-Tüm araçlar `--test` parametresiyle deterministik sahte çıktı üretir:
+---
+
+### 2️⃣ Yöntem 2: İnteraktif Terminal Sihirbazı (`python baslat.py`)
+
+Terminal veya komut satırında tek bir komutla tüm ekosistemi yönetebilirsiniz:
+
 ```bash
-python muhasebe/01_fismatik_ai.py --test
+python baslat.py
+```
+
+Açılan renkli Türkçe menüde:
+* **`[1] 🌐 Web Portalını Aç`** : Yerel sunucuyu ayağa kaldırır ve tarayıcınızı otomatik açar.
+* **`[2] 🔑 API Anahtarlarını Ayarla`** : Gemini veya OpenAI anahtarınızı yapıştırın; sistem anahtarın çalışıp çalışmadığını **canlı test eder** ve otomatik `.env` dosyası oluşturur!
+* **`[3] 🤖 20 Yapay Zeka Aracını Çalıştır`** : Menüden dilediğiniz aracı seçip hazır örnekle veya kendi metninizle anında çalıştırabilirsiniz.
+* **`[4] 🧪 Tüm Araçları Test Et`** : 20 aracın entegrasyon testini koşar.
+* **`[5] 📖 Ücretsiz API Anahtarı Alma Rehberi`** : Kredi kartsız 30 saniyede ücretsiz Gemini anahtarı alma rehberi.
+
+---
+
+### 3️⃣ Yöntem 3: Görsel Web Portalı (`web/index.html`)
+
+Doğrudan `web/index.html` dosyasına çift tıklayarak tarayıcınızda açabilirsiniz:
+1. **Demo / Test Modu (Anahtarsız):** Hiçbir API anahtarı girmeden de sol menüden istediğiniz aracı seçip **"✨ Hazır Örnek Yükle"** ve **"🚀 Yapay Zeka ile Analiz Et"** diyerek çıktısını inceleyebilirsiniz.
+2. **Canlı Yapay Zeka Modu:** Sağ üstteki **"⚙️ Ayarla"** butonuna basarak Google Gemini veya OpenAI anahtarınızı yapıştırıp **"🔍 Doğrula & Kaydet"** butonuna tıklayın. Anahtarınız doğrudan tarayıcı üzerinden canlı test edilir ve onaylanır!
+
+---
+
+## 🔑 30 Saniyede Ücretsiz API Anahtarı Nasıl Alınır?
+
+Yapay zeka araçlarını canlı kullanmak için en kolay yol **Google Gemini** kullanmaktır:
+
+1. [Google AI Studio API Key](https://aistudio.google.com/app/apikey) sayfasına gidin.
+2. Google (Gmail) hesabınızla giriş yapın (*Kredi kartı, telefon onayı veya ödeme bilgisi gerekmez*).
+3. Mavi renkli **"Create API Key"** butonuna tıklayın.
+4. Çıkan `AIzaSy...` ile başlayan anahtarı kopyalayın.
+5. Web portalında veya `python baslat.py` sihirbazında yapıştırıp kaydedin!
+
+> 💡 *Not: Dilerseniz [OpenAI Platform](https://platform.openai.com/api-keys) üzerinden aldığınız `sk-...` anahtarınızı da aynı şekilde tanımlayabilirsiniz.*
+
+---
+
+### 💻 Komut Satırından (CLI) Bağımsız Araç Çağırma
+
+Her araç doğrudan bağımsız bir komut satırı betiği olarak da çalıştırılabilir:
+
+```bash
+# Otomatik .env dosyasından okuyarak:
+python muhasebe/01_fismatik_ai.py
+
+# Simülasyon / Test modunda (API anahtarsız deneme):
 python hukuk/08_sozlesme_denetleyici_ai.py --test
-python kobi/16_kep_nobetci_ai.py --test
-```
 
-#### 2. Canlı API ile Çalıştırma
-API anahtarınızı ortam değişkeni olarak tanımlayın veya komut satırından geçin:
-
-**Google Gemini ile:**
-```bash
-# Windows PowerShell:
-$env:GEMINI_API_KEY = "AIzaSy..."
-python muhasebe/01_fismatik_ai.py --provider gemini
-
-# Veya doğrudan parametreyle:
-python muhasebe/01_fismatik_ai.py --provider gemini --api-key "AIzaSy..."
-```
-
-**OpenAI ile:**
-```bash
-# Windows PowerShell:
-$env:OPENAI_API_KEY = "sk-..."
-python hukuk/08_sozlesme_denetleyici_ai.py --provider openai
-
-# Veya doğrudan parametreyle:
-python hukuk/08_sozlesme_denetleyici_ai.py --provider openai --api-key "sk-..."
+# Farklı sağlayıcı belirterek:
+python kobi/16_kep_nobetci_ai.py --provider gemini
 ```
 
 ---
