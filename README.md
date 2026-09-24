@@ -1,6 +1,7 @@
 # 🇹🇷 Türkiye Yapay Zeka Araçları (Mali Müşavir, Avukat ve KOBİ'ler İçin)
 
 [![CI & Test Suite](https://github.com/eimza-kep/turkiye-yapay-zeka-araclari/actions/workflows/ci.yml/badge.svg)](https://github.com/eimza-kep/turkiye-yapay-zeka-araclari/actions/workflows/ci.yml)
+[![Canlı Web Portalı](https://img.shields.io/badge/Demo-Canl%C4%B1%20Web%20Portal%C4%B1-brightgreen.svg)](https://eimza-kep.github.io/turkiye-yapay-zeka-araclari/)
 [![Python Version](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Dependencies](https://img.shields.io/badge/dependencies-0%20external%20(stdlib%20only)-brightgreen)](#)
