@@ -188,6 +188,20 @@ TEST SONUCU: 20/20 Basarili (0 Hata) - Tum araclar sorunsuz calisiyor!
 - **Veri Tutmama İlkesi (Zero Retention):** Bu kütüphane hiçbir kullanıcı girdisini, müşteri faturasını, mizan verisini veya dava evrakını kendi sunucularına iletmez.
 - **Doğrudan İstemci-API İletişimi:** Çağrılar istemci makinesinden doğrudan resmi API sağlayıcılarına (`api.openai.com` veya `generativelanguage.googleapis.com`) HTTPS üzerinden şifreli iletilir.
 - **BYOK (Kendi Anahtarını Getir):** API anahtarınız tarayıcınızın yerel hafızasında (`localStorage`) saklanır, çerezlere veya harici servislere aktarılmaz.
+- **Yerel LLM (Ollama) Desteği:** Verilerinizin dışarı çıkmasını istemiyorsanız, yerel `Ollama` sunucusu (`USE_OLLAMA=true`) üzerinden Llama 3, Mistral veya Qwen modellerini doğrudan kullanabilirsiniz.
+
+---
+
+## 🌐 E-Dönüşüm & LegalTech Açık Kaynak Ekosistemi
+
+Bu depo, [@eimza-kep](https://github.com/eimza-kep) açık kaynak ekosisteminin yapay zeka omurgasıdır. İlgili diğer açık kaynak projelerimiz:
+
+* 📄 [udf2md](https://github.com/eimza-kep/udf2md) - UYAP `.udf` dosyalarını Markdown ve JSON'a çeviren LegalTech CLI ve kütüphane (Yapay zeka RAG boru hatları için ideal).
+* 📝 [javascript-udf-editor](https://github.com/eimza-kep/uyap-web-udf-editor) - Tarayıcı tabanlı modern web UDF belge görüntüleyici ve düzenleyici.
+* ⚖️ [avukat-hukuk-excel-hesaplamalari](https://github.com/eimza-kep/avukat-hukuk-excel-hesaplamalari) - Hukuk büroları için AAÜT, arabuluculuk ve icra hesaplama araçları.
+* 📊 [muhasebe-excel-sablonlari](https://github.com/eimza-kep/muhasebe-excel-sablonlari) - e-SMM, Tevkifat ve vergi kontrol motoru.
+* 🏢 [kobi-finans-yonetim-excel-sablonlari](https://github.com/eimza-kep/kobi-finans-yonetim-excel-sablonlari) - Nakit akış, başabaş ve stok takip tabloları.
+* 🌟 [awesome-turkiye-e-donusum](https://github.com/eimza-kep/awesome-turkiye-e-donusum) - Türkiye e-Dönüşüm açık kaynak araçları ve kütüphaneleri kürasyonu.
 
 ---
 
@@ -204,3 +218,4 @@ TEST SONUCU: 20/20 Basarili (0 Hata) - Tum araclar sorunsuz calisiyor!
 ## 📜 Lisans
 
 Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır. Ticari ve bireysel kullanım için tamamen serbesttir.
+

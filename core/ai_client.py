@@ -58,6 +58,8 @@ class AIClient:
         # Sağlayıcı tespiti
         if provider:
             self.provider = provider.lower()
+        elif os.environ.get("USE_OLLAMA", "").lower() in ("true", "1") or os.environ.get("DEFAULT_AI_PROVIDER", "").lower() == "ollama":
+            self.provider = "ollama"
         elif self.api_key and self.api_key.startswith("AIza"):
             self.provider = "gemini"
         elif self.api_key and self.api_key.startswith("sk-"):
@@ -76,6 +78,8 @@ class AIClient:
             self.model = model
         elif self.provider == "gemini":
             self.model = "gemini-1.5-flash"
+        elif self.provider == "ollama":
+            self.model = os.environ.get("OLLAMA_MODEL", "llama3")
         else:
             self.model = "gpt-4o-mini"
 
@@ -83,12 +87,14 @@ class AIClient:
         """
         Modelden metin veya JSON yanıt üretir.
         """
-        if self.mock or not self.api_key:
+        if self.mock or (not self.api_key and self.provider != "ollama"):
             return self._generate_mock(system_prompt, user_content, response_format)
 
         try:
             if self.provider == "gemini":
                 return self._call_gemini(system_prompt, user_content, response_format)
+            elif self.provider == "ollama":
+                return self._call_ollama(system_prompt, user_content, response_format)
             else:
                 return self._call_openai(system_prompt, user_content, response_format)
         except urllib.error.HTTPError as e:
@@ -160,6 +166,27 @@ class AIClient:
                     return parts[0].get("text", "")
             return "Yanıt alınamadı."
 
+    def _call_ollama(self, system_prompt, user_content, response_format):
+        host = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+        url = f"{host.rstrip('/')}/api/generate"
+        headers = {"Content-Type": "application/json"}
+        payload = {
+            "model": self.model,
+            "system": system_prompt,
+            "prompt": user_content,
+            "stream": False
+        }
+        if response_format == "json":
+            payload["format"] = "json"
+
+        data = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(url, data=data, headers=headers, method="POST")
+
+        with urllib.request.urlopen(req, timeout=120) as resp:
+            res_body = resp.read().decode("utf-8")
+            res_json = json.loads(res_body)
+            return res_json.get("response", "Ollama yanıtı alınamadı.")
+
     def _generate_mock(self, system_prompt, user_content, response_format):
         """
         API anahtarı bulunmadığında veya CI testlerinde deterministik simülasyon yanıtı döner.
@@ -179,10 +206,21 @@ Kullanıcı girdisi başarıyla ayrıştırıldı ({len(user_content)} karakter)
         Verilen API anahtarının geçerliliğini test eder.
         Döner: (bool, str) -> (Başarılı mı, Mesaj)
         """
+        prov = provider.lower()
+        if prov == "ollama":
+            try:
+                host = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+                url = f"{host.rstrip('/')}/api/tags"
+                req = urllib.request.Request(url, method="GET")
+                with urllib.request.urlopen(req, timeout=5) as resp:
+                    if resp.status == 200:
+                        return True, "✅ Yerel Ollama sunucusuna bağlanıldı ve aktif!"
+            except Exception as e:
+                return False, f"❌ Ollama sunucusuna erişilemedi ({e}). Ollama'nın çalıştığından emin olun."
+
         if not api_key:
             return False, "API anahtarı boş bırakılamaz."
 
-        prov = provider.lower()
         try:
             if prov == "gemini" or api_key.startswith("AIza"):
                 url = f"https://generativelanguage.googleapis.com/v1beta/models?key={api_key}"
