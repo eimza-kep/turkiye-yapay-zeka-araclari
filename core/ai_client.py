@@ -62,11 +62,16 @@ class AIClient:
             self.provider = "ollama"
         elif self.api_key and self.api_key.startswith("AIza"):
             self.provider = "gemini"
+        elif self.api_key and self.api_key.startswith("sk-ant-"):
+            self.provider = "anthropic"
         elif self.api_key and self.api_key.startswith("sk-"):
             self.provider = "openai"
         elif os.environ.get("GEMINI_API_KEY"):
             self.provider = "gemini"
             self.api_key = os.environ.get("GEMINI_API_KEY")
+        elif os.environ.get("ANTHROPIC_API_KEY"):
+            self.provider = "anthropic"
+            self.api_key = os.environ.get("ANTHROPIC_API_KEY")
         elif os.environ.get("OPENAI_API_KEY"):
             self.provider = "openai"
             self.api_key = os.environ.get("OPENAI_API_KEY")
@@ -78,6 +83,8 @@ class AIClient:
             self.model = model
         elif self.provider == "gemini":
             self.model = "gemini-1.5-flash"
+        elif self.provider == "anthropic":
+            self.model = "claude-3-5-sonnet-20241022"
         elif self.provider == "ollama":
             self.model = os.environ.get("OLLAMA_MODEL", "llama3")
         else:
@@ -93,6 +100,8 @@ class AIClient:
         try:
             if self.provider == "gemini":
                 return self._call_gemini(system_prompt, user_content, response_format)
+            elif self.provider == "anthropic":
+                return self._call_anthropic(system_prompt, user_content, response_format)
             elif self.provider == "ollama":
                 return self._call_ollama(system_prompt, user_content, response_format)
             else:
@@ -166,6 +175,33 @@ class AIClient:
                     return parts[0].get("text", "")
             return "Yanıt alınamadı."
 
+    def _call_anthropic(self, system_prompt, user_content, response_format):
+        url = "https://api.anthropic.com/v1/messages"
+        headers = {
+            "Content-Type": "application/json",
+            "x-api-key": self.api_key,
+            "anthropic-version": "2023-06-01"
+        }
+        payload = {
+            "model": self.model if self.model.startswith("claude") else "claude-3-5-sonnet-20241022",
+            "system": system_prompt,
+            "messages": [
+                {"role": "user", "content": user_content}
+            ],
+            "max_tokens": 4096,
+            "temperature": 0.2
+        }
+        data = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(url, data=data, headers=headers, method="POST")
+
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            res_body = resp.read().decode("utf-8")
+            res_json = json.loads(res_body)
+            content = res_json.get("content", [])
+            if content and isinstance(content, list):
+                return content[0].get("text", "")
+            return "Anthropic yanıtı alınamadı."
+
     def _call_ollama(self, system_prompt, user_content, response_format):
         host = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
         url = f"{host.rstrip('/')}/api/generate"
@@ -228,6 +264,22 @@ Kullanıcı girdisi başarıyla ayrıştırıldı ({len(user_content)} karakter)
                 with urllib.request.urlopen(req, timeout=10) as resp:
                     if resp.status == 200:
                         return True, "✅ Google Gemini API anahtarı doğrulandı ve aktif!"
+            elif prov == "anthropic" or api_key.startswith("sk-ant-"):
+                url = "https://api.anthropic.com/v1/messages"
+                headers = {
+                    "Content-Type": "application/json",
+                    "x-api-key": api_key,
+                    "anthropic-version": "2023-06-01"
+                }
+                payload = {
+                    "model": "claude-3-haiku-20240307",
+                    "max_tokens": 10,
+                    "messages": [{"role": "user", "content": "ping"}]
+                }
+                req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers=headers, method="POST")
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    if resp.status == 200:
+                        return True, "✅ Anthropic Claude API anahtarı doğrulandı ve aktif!"
             else:
                 url = "https://api.openai.com/v1/models"
                 headers = {"Authorization": f"Bearer {api_key}"}
