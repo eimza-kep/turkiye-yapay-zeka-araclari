@@ -42,18 +42,19 @@ def get_current_keys():
     load_dotenv()
     gemini = os.environ.get("GEMINI_API_KEY", "").strip()
     openai = os.environ.get("OPENAI_API_KEY", "").strip()
-    return gemini, openai
+    provider = os.environ.get("DEFAULT_AI_PROVIDER", "gemini").strip()
+    return gemini, openai, provider
 
 def mask_key(key):
     if not key:
-        return "❌ Tanımlı Değil (Demo / Test Modu)"
+        return "❌ Tanımlı Değil"
     if len(key) <= 8:
         return "****"
     return f"✅ {key[:6]}...{key[-4:]}"
 
-def save_to_env(gemini_key=None, openai_key=None):
+def save_to_env(gemini_key=None, openai_key=None, default_provider=None, ollama_model=None):
     """
-    Anahtarları .env dosyasına güvenle kaydeder.
+    Anahtarları ve model tercihlerini .env dosyasına güvenle kaydeder.
     """
     env_data = {}
     if os.path.exists(ENV_PATH):
@@ -73,13 +74,19 @@ def save_to_env(gemini_key=None, openai_key=None):
     if openai_key is not None:
         env_data["OPENAI_API_KEY"] = openai_key.strip()
         os.environ["OPENAI_API_KEY"] = openai_key.strip()
+    if default_provider is not None:
+        env_data["DEFAULT_AI_PROVIDER"] = default_provider.strip()
+        os.environ["DEFAULT_AI_PROVIDER"] = default_provider.strip()
+    if ollama_model is not None:
+        env_data["OLLAMA_MODEL"] = ollama_model.strip()
+        os.environ["OLLAMA_MODEL"] = ollama_model.strip()
 
     if "DEFAULT_AI_PROVIDER" not in env_data:
         env_data["DEFAULT_AI_PROVIDER"] = "gemini"
 
     try:
         with open(ENV_PATH, "w", encoding="utf-8") as f:
-            f.write("# Türkiye Yapay Zeka Araçları - API Yapılandırması\n")
+            f.write("# Türkiye Yapay Zeka Araçları - API ve Model Yapılandırması\n")
             for k, v in env_data.items():
                 f.write(f"{k}={v}\n")
         return True
@@ -118,20 +125,24 @@ def api_key_wizard():
     while True:
         clear_screen()
         print_banner()
-        gemini, openai = get_current_keys()
-        print("\n🔑 MEVCUT API ANAHTARI DURUMU:")
-        print(f"  • Google Gemini: {mask_key(gemini)}")
-        print(f"  • OpenAI       : {mask_key(openai)}")
+        gemini, openai, prov = get_current_keys()
+        print("\n🔑 MEVCUT MODEL VE SAĞLAYICI YAPILANDIRMASI:")
+        print(f"  • Aktif Sağlayıcı: {prov.upper()}")
+        print(f"  • Google Gemini  : {mask_key(gemini)}")
+        print(f"  • OpenAI         : {mask_key(openai)}")
+        print(f"  • Yerel LLM      : Ollama / LM Studio (KVKK Çevrimdışı)")
         print("-" * 70)
         print("1. Google Gemini API Anahtarı Gir / Güncelle (ÖNERİLEN - ÜCRETSİZ)")
         print("2. OpenAI API Anahtarı Gir / Güncelle")
-        print("3. Mevcut Anahtarları Doğrula & Test Et")
-        print("4. Anahtarları Temizle (Test / Demo Moduna Dön)")
-        print("5. Ücretsiz Gemini Anahtarı Nasıl Alınır? (Rehber)")
+        print("3. Ollama Yerel LLM'e Geç (%100 Çevrimdışı & KVKK Uyumlu)")
+        print("4. LM Studio Yerel Sunucuya Geç (http://localhost:1234)")
+        print("5. Mevcut Bağlantıları Test Et & Doğrula")
+        print("6. Anahtarları Temizle (Test / Demo Moduna Dön)")
+        print("7. Ücretsiz Gemini Anahtarı Nasıl Alınır? (Rehber)")
         print("0. Ana Menüye Dön")
         print("-" * 70)
 
-        choice = input("Seçiminiz [0-5]: ").strip()
+        choice = input("Seçiminiz [0-7]: ").strip()
 
         if choice == "1":
             print("\n💡 İpucu: Google AI Studio'dan aldığınız 'AIzaSy...' ile başlayan anahtarı yapıştırın.")
@@ -142,12 +153,12 @@ def api_key_wizard():
                 ok, msg = AIClient.validate_key(key, "gemini")
                 print(msg)
                 if ok or "429" in msg:
-                    save_to_env(gemini_key=key)
+                    save_to_env(gemini_key=key, default_provider="gemini")
                     print("💾 Anahtar .env dosyasına başarıyla kaydedildi!")
                 else:
                     save_choice = input("Anahtar doğrulanamadı, yine de kaydetmek ister misiniz? (e/h): ").lower()
                     if save_choice == "e":
-                        save_to_env(gemini_key=key)
+                        save_to_env(gemini_key=key, default_provider="gemini")
             input("\nDevam etmek için [Enter] tuşuna basınız...")
 
         elif choice == "2":
@@ -159,35 +170,55 @@ def api_key_wizard():
                 ok, msg = AIClient.validate_key(key, "openai")
                 print(msg)
                 if ok or "429" in msg:
-                    save_to_env(openai_key=key)
+                    save_to_env(openai_key=key, default_provider="openai")
                     print("💾 Anahtar .env dosyasına başarıyla kaydedildi!")
                 else:
                     save_choice = input("Anahtar doğrulanamadı, yine de kaydetmek ister misiniz? (e/h): ").lower()
                     if save_choice == "e":
-                        save_to_env(openai_key=key)
+                        save_to_env(openai_key=key, default_provider="openai")
             input("\nDevam etmek için [Enter] tuşuna basınız...")
 
         elif choice == "3":
-            print("\n🧪 Anahtarlar Test Ediliyor...")
-            if gemini:
-                ok, msg = AIClient.validate_key(gemini, "gemini")
-                print(f"Google Gemini: {msg}")
-            else:
-                print("Google Gemini: Tanımlı değil.")
-
-            if openai:
-                ok, msg = AIClient.validate_key(openai, "openai")
-                print(f"OpenAI       : {msg}")
-            else:
-                print("OpenAI       : Tanımlı değil.")
+            model_name = input("Ollama model adı (Varsayılan: llama3.2 veya qwen2.5): ").strip() or "llama3.2"
+            print("⏳ Yerel Ollama sunucusu (http://localhost:11434) kontrol ediliyor...")
+            ok, msg = AIClient.validate_key("", "ollama")
+            print(msg)
+            save_to_env(default_provider="ollama", ollama_model=model_name)
+            print("✅ Aktif sağlayıcı Ollama olarak ayarlandı (%100 KVKK Güvenli).")
             input("\nDevam etmek için [Enter] tuşuna basınız...")
 
         elif choice == "4":
-            save_to_env(gemini_key="", openai_key="")
-            print("\n🗑️ Tüm API anahtarları temizlendi. Sistem artık Demo / Test modunda çalışacak.")
+            print("⏳ LM Studio yerel sunucusu (http://localhost:1234) kontrol ediliyor...")
+            ok, msg = AIClient.validate_key("", "lmstudio")
+            print(msg)
+            save_to_env(default_provider="lmstudio")
+            print("✅ Aktif sağlayıcı LM Studio olarak ayarlandı.")
             input("\nDevam etmek için [Enter] tuşuna basınız...")
 
         elif choice == "5":
+            print("\n🧪 Sağlayıcı Bağlantıları Test Ediliyor...")
+            if gemini:
+                ok, msg = AIClient.validate_key(gemini, "gemini")
+                print(f"Google Gemini : {msg}")
+            else:
+                print("Google Gemini : Tanımlı değil.")
+
+            if openai:
+                ok, msg = AIClient.validate_key(openai, "openai")
+                print(f"OpenAI        : {msg}")
+            else:
+                print("OpenAI        : Tanımlı değil.")
+
+            ok_ol, msg_ol = AIClient.validate_key("", "ollama")
+            print(f"Yerel Ollama  : {msg_ol}")
+            input("\nDevam etmek için [Enter] tuşuna basınız...")
+
+        elif choice == "6":
+            save_to_env(gemini_key="", openai_key="", default_provider="demo")
+            print("\n🗑️ Tüm API anahtarları temizlendi. Sistem artık Demo / Test modunda çalışacak.")
+            input("\nDevam etmek için [Enter] tuşuna basınız...")
+
+        elif choice == "7":
             show_key_guide()
 
         elif choice == "0":
@@ -251,9 +282,10 @@ def execute_single_tool(tool_id, data):
     print(f"\n🚀 SEÇİLEN ARAÇ: {data['title']}\n")
     print("1. Hazır Gerçekçi Örnek Senaryo ile Çalıştır")
     print("2. Kendi Metnimi / Verimi Girerek Çalıştır")
+    print("3. UYAP UDF (.udf) veya XML Belgesi Dosyadan Yükle")
     print("0. Geri Dön")
     
-    sub = input("\nSeçiminiz [1/2/0]: ").strip()
+    sub = input("\nSeçiminiz [1/2/3/0]: ").strip()
     if sub == "1":
         content = data["sample_input"]
         print("\n📥 KULLANILAN ÖRNEK GİRDİ:")
@@ -271,6 +303,20 @@ def execute_single_tool(tool_id, data):
         content = "\n".join(lines).strip()
         if not content:
             print("Girdi boş olduğu için işlem iptal edildi.")
+            input("\nDevam etmek için [Enter]...")
+            return
+    elif sub == "3":
+        file_path = input("\n📁 UYAP UDF veya metin/xml dosya yolunu girin: ").strip().strip('"\'')
+        if not file_path or not os.path.exists(file_path):
+            print("❌ Dosya bulunamadı!")
+            input("\nDevam etmek için [Enter]...")
+            return
+        from core.udf_parser import read_udf_or_text
+        try:
+            content = read_udf_or_text(file_path)
+            print(f"✅ Dosya başarıyla okundu ({len(content)} karakter).")
+        except Exception as e:
+            print(f"❌ Dosya okuma hatası: {e}")
             input("\nDevam etmek için [Enter]...")
             return
     else:
@@ -303,15 +349,22 @@ def main_menu():
     while True:
         clear_screen()
         print_banner()
-        gemini, openai = get_current_keys()
+        gemini, openai, prov = get_current_keys()
         
-        mode_text = "🟢 Canlı AI Modu" if (gemini or openai) else "🧪 Demo / Simülasyon Modu (Anahtarsız)"
-        active_prov = "Gemini" if gemini else ("OpenAI" if openai else "Yok")
+        if prov in ("ollama", "lmstudio", "llamacpp", "local"):
+            mode_text = f"🟢 Yerel AI Modu ({prov.upper()} - %100 KVKK Güvenli)"
+            active_prov = prov.upper()
+        elif gemini or openai:
+            mode_text = "🟢 Canlı Bulut AI Modu"
+            active_prov = "Gemini" if gemini else "OpenAI"
+        else:
+            mode_text = "🧪 Demo / Simülasyon Modu (Anahtarsız)"
+            active_prov = "Demo Motoru"
 
         print(f"\n📌 ÇALIŞMA DURUMU: {mode_text} (Aktif: {active_prov})")
         print("-" * 70)
         print("  [1] 🌐 Web Portalını Aç (Görsel Arayüz - Tek Tıkla Tarayıcıda)")
-        print("  [2] 🔑 API Anahtarlarını Ayarla (Gemini / OpenAI Kolay Kurulum)")
+        print("  [2] 🔑 API Anahtarlarını / Yerel Modeli Ayarla (Ollama/LM Studio/Gemini)")
         print("  [3] 🤖 20 Yapay Zeka Aracından Birini Çalıştır (Terminal)")
         print("  [4] 🧪 Tüm Araçları Test Et (20/20 Doğrulama)")
         print("  [5] 📖 Ücretsiz API Anahtarı Nasıl Alınır? (Rehber)")

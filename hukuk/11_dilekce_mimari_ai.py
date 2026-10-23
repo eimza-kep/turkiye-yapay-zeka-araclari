@@ -14,6 +14,7 @@ import argparse
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from core.ai_client import AIClient
 from core.prompt_templates import PROMPT_TEMPLATES
+from core.udf_parser import read_udf_or_text
 
 TOOL_KEY = "11_dilekce_mimari_ai"
 
@@ -44,9 +45,7 @@ if __name__ == "__main__":
     parser.add_argument("--provider", default=None, help="openai veya gemini")
     args = parser.parse_args()
 
-    user_input = args.input
-    if user_input and os.path.isfile(user_input):
-        with open(user_input, "r", encoding="utf-8", errors="ignore") as f:
-            user_input = f.read()
+    target_file = getattr(args, "udf", None) or args.input
+    user_input = read_udf_or_text(target_file) if target_file else None
 
     run_tool(user_input, mock=args.test, api_key=args.api_key, provider=args.provider)

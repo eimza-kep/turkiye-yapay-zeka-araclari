@@ -97,14 +97,75 @@ def main():
     print(f"📊 Test Sonucu: {passed}/{len(MODULE_MAP)} Araç Başarıyla Doğrulandı.")
     print("-------------------------------------------------------------------------------")
 
+    # UDF ve Yerel LLM ek testleri
+    try:
+        test_udf_parser()
+    except Exception as e:
+        errors.append(f"[UDF Parser] Test hatası: {e}")
+
+    try:
+        test_local_llm_support()
+    except Exception as e:
+        errors.append(f"[Local LLM] Test hatası: {e}")
+
     if errors:
         print("\n⚠️ Tespit Edilen Hatalar:")
         for err in errors:
             print(f"  - {err}")
         return 1
 
-    print("\n🎉 Tüm 20 yapay zeka aracı testleri eksiksiz geçti! Sistem canlıya hazır.")
+    print("\n🎉 Tüm 20 yapay zeka aracı, UYAP UDF motoru ve Yerel LLM testleri eksiksiz geçti!")
     return 0
+
+def test_udf_parser():
+    print("\n-------------------------------------------------------------------------------")
+    print("⚖️ UYAP UDF & XML Dava Evrakı Ayrıştırıcı Testleri")
+    print("-------------------------------------------------------------------------------")
+    import io
+    import zipfile
+    from core.udf_parser import clean_xml_tags, extract_udf_signers, parse_udf
+
+    # 1. XML temizleme testi
+    sample_xml = "<p>T.C. İSTANBUL 1. ASLİYE TİCARET MAHKEMESİ</p><p>Esas No: 2026/142</p>"
+    clean_text = clean_xml_tags(sample_xml)
+    assert "İSTANBUL 1. ASLİYE TİCARET MAHKEMESİ" in clean_text, "clean_xml_tags başarısız!"
+    print("  [01/03] ✓ clean_xml_tags (XML etiket temizleme) - OK")
+
+    # 2. E-İmza tespiti testi
+    sig_xml = '<signer name="Av. Mehmet Yılmaz" date="2026-03-24 15:30:00" role="Vekil"/>'
+    signers = extract_udf_signers(sig_xml)
+    assert len(signers) == 1 and signers[0]["ad"] == "Av. Mehmet Yılmaz", "extract_udf_signers başarısız!"
+    print("  [02/03] ✓ extract_udf_signers (Elektronik imza tespiti) - OK")
+
+    # 3. Sentetik .udf ZIP arşivi testi
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("content.xml", "<document><signer name='Av. Ayşe Demir' date='2026-04-01'/><body><p>Dava dilekçesidir.</p></body></document>")
+    buffer.seek(0)
+    parsed = parse_udf(buffer.getvalue())
+    assert "Dava dilekçesidir." in parsed["metin"], "parse_udf metin çıkarma başarısız!"
+    assert len(parsed["imzacilar"]) == 1, "parse_udf imza çıkarma başarısız!"
+    print("  [03/03] ✓ parse_udf (Zero-dependency UDF ZIP/XML motoru) - OK")
+    return True
+
+def test_local_llm_support():
+    print("\n-------------------------------------------------------------------------------")
+    print("🦙 Yerel LLM (Ollama, LM Studio, Llama.cpp) Desteği Testleri")
+    print("-------------------------------------------------------------------------------")
+    from core.ai_client import AIClient, LOCAL_PROVIDERS
+
+    for prov in LOCAL_PROVIDERS:
+        client = AIClient(provider=prov, mock=True)
+        resp = client.generate("Sen bir asistansın.", "Test girdisi")
+        assert len(resp) > 10, f"{prov} mock yanıt üretimi başarısız!"
+        print(f"  ✓ AIClient yerel sağlayıcı: {prov} (Mock & Model: {client.model}) - OK")
+
+    # validate_key yerel testi
+    ok, msg = AIClient.validate_key("", "ollama")
+    assert "Ollama" in msg, "validate_key ollama yanıtı hatalı!"
+    print("  ✓ AIClient.validate_key yerel teşhis motoru - OK")
+    return True
+
 
 if __name__ == "__main__":
     sys.exit(main())
